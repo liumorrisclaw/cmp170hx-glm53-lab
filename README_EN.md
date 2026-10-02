@@ -100,6 +100,34 @@ Key points:
 5. Known edges: concurrent cold prefill interleaves and starves decode (PP scheduling; recovers with cache hits); an 8-stream long-input batch occasionally misses a simple needle check (1 of 8; single-stream unaffected).
 6. Upgrade trap: `do_install`'s editable install of the fork uninstalls `flashinfer`, and the verify step then fails in a loop on slow links. Manually install `flashinfer-python`, write the stamp (`commit` line + `reqs <first 16 hex of sha256>`), and the skip path takes over.
 
+## Comparison with 2× DGX Spark (TensorFold EXL3) — 2026-10-02
+
+A third system: 2× DGX Spark (GB10, 128GB unified memory each), TensorFold runtime, `GLM-5.3-Flash-EXL3` 4bpw weights, OpenAI-compatible API. **The baseline protocol is identical to the tables above** (same prompts, T=0, 400-token outputs, median of 3); the long-text task is the same Red Alert storyline creative request.
+
+![DGX short-input](assets/charts/08-cmp170hx-vs-dgx-c1.png)
+
+| Prompt | 4× CMP 170HX (PP4 1.6.0) | 2× DGX Spark (EXL3) | DGX/CMP |
+|---|---:|---:|---:|
+| c1 structured | 220.5 | 108.9 | 49% |
+| c1 coding | 127.5 | 75.2 | 59% |
+| c1 prose | 95.9 | 60.9 | 64% |
+
+End-to-end long text (creative task, same prompt, two instruction variants):
+
+![DGX long text](assets/charts/09-cmp170hx-vs-dgx-longtext.png)
+
+| Task | CMP 170HX | 2× DGX Spark | Note |
+|---|---|---|---|
+| thinking on, 6,000-token budget | 50.4 s, completed normally (654 Chinese chars of body) | 121.0 s and **truncated** (all 6,000 tokens spent on reasoning, 0 body) | CMP 49.6 tok/s vs DGX 49.6 tok/s — similar rates, but the DGX side burns tokens on reasoning faster |
+| direct-output instruction, 2,500-token budget | 17.7 s (769 Chinese chars) | 49.7 s, truncated again (only 208 Chinese chars of body) | CMP 84.7 tok/s vs DGX 50.3 tok/s |
+
+Observed differences and attribution (the two systems differ in more than one way; main variables below):
+
+1. **Short-input generation: CMP leads 1.6–2.0×.** CMP runs W4A16 Marlin weights + DFlash2 speculative decoding (adaptive depth; ~4.5 tokens/step on structured text). The DGX side's EXL3 4bpw uses per-layer dequantized row decoding, and TensorFold has no equivalent speculative win on GB10 — roughly 1 token/step. Speculative amplification on predictable text is the dominant factor.
+2. **End-to-end long text: the gap widens to 2.9× (18 s vs 50 s).** On top of the base rate difference (84.7 vs 50.3 tok/s), the DGX side reasons more verbosely (the same direct-output instruction still produces ~7,900 chars of English analysis first), compounding truncation risk.
+3. **Context capacity: different roles.** The DGX pair's 256GB unified memory targets longer contexts and larger batches; the CMP configuration caps at 512K but leads across the board in measured single-stream generation and prefill rates.
+4. Role note: DGX is TensorFold's target hardware (Apple Silicon / modern NVIDIA unified runtime); CMP 170HX is Morrowmake's target (sm_80 mining cards). This is each open-source stack measured on its own best-fit hardware, not a same-hardware runtime comparison.
+
 ## Repository layout
 
 ```
@@ -112,6 +140,7 @@ Key points:
 ├── assets/charts/       chart PNGs
 └── LICENSE
 ```
+
 
 ## Reproduction
 

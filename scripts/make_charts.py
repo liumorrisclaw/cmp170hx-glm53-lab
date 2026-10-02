@@ -125,3 +125,32 @@ ax.set_title("DFlash2 acceptance per position — PP4 1.6.0, mixed prompts (630 
 save(fig, "07-acceptance-per-position")
 
 print("all charts done")
+
+# ---- chart 8: CMP 170HX vs 2x DGX Spark (c1, same protocol) ----------------
+dgx = [108.9, 75.2, 60.9]
+fig, ax = plt.subplots(figsize=(7.6, 3.6))
+b1 = ax.bar(x - w/2, [220.5, 127.5, 95.9], w, color=ORANGE, label="4x CMP 170HX - PP4 1.6.0 (W4A16 + DFlash2)")
+b2 = ax.bar(x + w/2, dgx, w, color=GRAY, label="2x DGX Spark - TensorFold EXL3 4bpw")
+label_bars(ax, b1); label_bars(ax, b2)
+for i in range(3):
+    r = dgx[i] / [220.5, 127.5, 95.9][i]
+    ax.text(x[i] + w/2, dgx[i] - 12, f"{r*100:.0f}%", ha="center", fontsize=10,
+            color="white", fontweight="bold")
+ax.set_xticks(x, prompts); ax.set_ylim(0, 260); ax.legend(frameon=False, fontsize=9)
+ax.set_title("Same prompts, same protocol: CMP 170HX rig vs 2x DGX Spark")
+save(fig, "08-cmp170hx-vs-dgx-c1")
+
+# ---- chart 9: long-text end-to-end (Red Alert storyline) -------------------
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(10.2, 3.6))
+names = ["CMP 170HX\nPP4 1.6.0", "2x DGX Spark\nEXL3"]
+t_default = [50.4, 121.0]; t_direct = [17.7, 49.7]
+b1 = ax1.bar([0, 1], t_default, 0.5, color=[ORANGE, GRAY])
+label_bars(ax1, b1, fmt="{:.0f}s")
+ax1.set_xticks([0, 1], names); ax1.set_ylim(0, 150)
+ax1.set_title("thinking on: wall time (CMP finished, DGX truncated at 6k)")
+b2 = ax2.bar([0, 1], t_direct, 0.5, color=[ORANGE, GRAY])
+label_bars(ax2, b2, fmt="{:.0f}s")
+ax2.set_xticks([0, 1], names); ax2.set_ylim(0, 70)
+ax2.set_title("direct-output instruction: wall time")
+save(fig, "09-cmp170hx-vs-dgx-longtext")
+print("cmp/dgx charts done")

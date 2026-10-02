@@ -100,13 +100,43 @@ structured 的大幅提升与 1.6.0 的 acceptance-aware 投机深度一致。�
 5. 已知边界:多流冷 prefill 期间 decode 被交错阻塞(PP 调度特性,缓存命中后恢复);长输入多流偶发简单 needle 未命中(8 路中 1 路,单流无此现象)。
 6. 升级陷阱:`do_install` 的 fork editable 安装会卸载 `flashinfer`,verify 失败后在慢速链路上会循环;手动补装 `flashinfer-python` 并写入 stamp(`commit` 行 + `reqs <sha256 前 16 位>`)后跳过通道正常接管。
 
+## 与 2× DGX Spark(TensorFold EXL3)的对照(2026-10-02)
+
+第三个系统:2× DGX Spark(GB10,128GB 统一内存×2),TensorFold 运行时,`GLM-5.3-Flash-EXL3` 4bpw 权重,OpenAI 兼容 API。**基线协议与上表完全一致**(同 prompt、T=0、400-token 输出、预热后 3 轮中位),长文本任务为同一段"红警故事线"创作请求。
+
+![DGX 短输入对比](assets/charts/08-cmp170hx-vs-dgx-c1.png)
+
+| 口径 | 4× CMP 170HX(PP4 1.6.0) | 2× DGX Spark(EXL3) | DGX/CMP |
+|---|---:|---:|---:|
+| c1 structured | 220.5 | 108.9 | 49% |
+| c1 coding | 127.5 | 75.2 | 59% |
+| c1 prose | 95.9 | 60.9 | 64% |
+
+端到端长文本(创作任务,同 prompt 两组指令):
+
+![DGX 长文本对比](assets/charts/09-cmp170hx-vs-dgx-longtext.png)
+
+| 任务 | CMP 170HX | 2× DGX Spark | 说明 |
+|---|---|---|---|
+| 思考开,6,000 token 预算 | 50.4 s 正常完成(正文 654 中文字) | 121.0 s 且**被截断**(6,000 token 全耗在思考,正文 0 字) | CMP 49.6 tok/s,DGX 49.6 tok/s——速率接近,但 DGX 思考耗 token 更快 |
+| 直接输出指令,2,500 token 预算 | 17.7 s(769 中文字) | 49.7 s 且再次截断(正文仅 208 中文字) | CMP 84.7 tok/s,DGX 50.3 tok/s |
+
+实际测试结果差异与归因(注意两条系统的配置差异不止一处,以下是主要变量):
+
+1. **短输入生成速率:CMP 领先 1.6–2.0 倍**。CMP 用 W4A16 Marlin 权重 + DFlash2 投机解码(自适应深度,结构化文本每步约 4.5 token);DGX 的 EXL3 4bpw 走逐层反量化行解码,TensorFold 在 GB10 上无等效投机收益,每步就是 1 token 上下。投机解码对可预测文本的放大是主要差异来源。
+2. **长文本端到端:差距扩大到 2.9 倍(18 s vs 50 s)**。除基础速率差(84.7 vs 50.3 tok/s)外,DGX 侧思考更冗长(同样的直出指令仍先生成约 7,900 字符英文分析),叠加截断风险。
+3. **上下文容量:定位不同**。DGX 双卡 256GB 统一内存可承载更长上下文与更大 batch(其宣传定位);CMP 这套配置上限 512K,但单流生成与 prefill 速率在实测口径下全面领先。
+4. 两台机器的角色差异:DGX 是 TensorFold 的目标硬件(Apple Silicon / 新 NVIDIA 卡统一运行时),CMP 170HX 是 Morrowmake 配方的目标硬件(sm_80 矿卡)。本对照是"两种开源栈各自在自己最优硬件上的实测",不是同硬件的运行时对比。
+
+
+
 ## 目录结构
 
 ```
 ├── README.md            中文报告(本文件)
 ├── README_EN.md         English version
 ├── notebooks/           按日期的实验记录(环境 pin、数据表、复现)
-├── data/                脱敏原始 JSON(bench 归档)
+├── data/                脱敏原始 JSON(bench 归档,含 dgx62_*.json)
 ├── configs/             脱敏启动配置(PP4 / TP4)
 ├── scripts/             图表生成脚本(matplotlib,数据单源)
 ├── assets/charts/       图表 PNG
