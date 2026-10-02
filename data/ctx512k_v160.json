@@ -1,0 +1,20 @@
+[
+  {
+    "run": 1,
+    "prompt_tokens": 482289,
+    "ttft_s": 85.8,
+    "prefill_tok_s": 5619,
+    "decode_tok_s": 156.9,
+    "needle_hit": true,
+    "answer_tail": "to extract the emergency key number from the system administrator note in the provided text. The note says: \"\u7cfb\u7edf\u7ba1\u7406\u5458\u5907\u6ce8\uff1a\u672c\u4ed3\u5e93"
+  },
+  {
+    "run": 2,
+    "prompt_tokens": 482647,
+    "ttft_s": 86.2,
+    "prefill_tok_s": 5601,
+    "decode_tok_s": 140.1,
+    "needle_hit": true,
+    "answer_tail": "LPHA\uff0c\u5b58\u653e\u5728\u4e09\u53f7\u51b7\u67dc\u3002\"\n\nThe question asks for just the number, which is TX-7734-ALPHA.</think>TX-7734-ALPHAThe user is asking me"
+  }
+]

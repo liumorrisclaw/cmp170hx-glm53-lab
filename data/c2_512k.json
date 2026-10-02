@@ -1,0 +1,22 @@
+{
+  "n": 2,
+  "wall_s": 98,
+  "ok": 2,
+  "aggregate_tok_s": 2.0,
+  "results": [
+    {
+      "ttft_s": 8.7,
+      "pt": 496111,
+      "ct": 96,
+      "decode_s": 14.3,
+      "hit": true
+    },
+    {
+      "ttft_s": 97.5,
+      "pt": 496165,
+      "ct": 96,
+      "decode_s": 0.6,
+      "hit": true
+    }
+  ]
+}

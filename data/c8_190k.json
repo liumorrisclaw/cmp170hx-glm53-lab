@@ -1,0 +1,62 @@
+{
+  "wall_s": 19,
+  "aggregate_tok_s": 40.1,
+  "results": [
+    {
+      "ttft_s": 6.0,
+      "pt": 162074,
+      "ct": 96,
+      "decode_s": 12.1,
+      "hit": true
+    },
+    {
+      "ttft_s": 11.1,
+      "pt": 159913,
+      "ct": 96,
+      "decode_s": 7.5,
+      "hit": true
+    },
+    {
+      "ttft_s": 2.9,
+      "pt": 159985,
+      "ct": 96,
+      "decode_s": 14.9,
+      "hit": true
+    },
+    {
+      "ttft_s": 6.6,
+      "pt": 163128,
+      "ct": 96,
+      "decode_s": 11.6,
+      "hit": false
+    },
+    {
+      "ttft_s": 12.5,
+      "pt": 165606,
+      "ct": 96,
+      "decode_s": 6.2,
+      "hit": true
+    },
+    {
+      "ttft_s": 15.2,
+      "pt": 162690,
+      "ct": 96,
+      "decode_s": 4.0,
+      "hit": true
+    },
+    {
+      "ttft_s": 15.8,
+      "pt": 165951,
+      "ct": 96,
+      "decode_s": 3.2,
+      "hit": true
+    },
+    {
+      "ttft_s": 17.7,
+      "pt": 168049,
+      "ct": 96,
+      "decode_s": 1.3,
+      "hit": true
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+{
+  "phase": "pp4_512k_p1",
+  "health_code": 200,
+  "health_body": "",
+  "runs": [
+    {
+      "http": 200,
+      "ttft_s": 0.11489184300080524,
+      "wall_s": 4.3311165340019215,
+      "decode_s": 4.216224691001116,
+      "tok_s": 94.63442516514932,
+      "delivered_tok_s": 92.35493823815514,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion works\n4. How lookup works\n5. Collision handling (chaining, open addressing, variants)\n6. Resizing/rehashing\n7. Time complexity anal",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion works\n4. How lookup works\n5. Collision handling (chaining, open addressing, variants)\n6. Resizing/rehashing\n7. Time complexity analysis (with amortized analysis)\n8. Maybe some practical considerations\n\nLet me think through the content carefully to make sure it's accurate and thorough.\n\n**What is a hash map?**\nA hash map (also called hash table, dictionary, associative array) is a data structure that stores key-value pairs and provides efficient lookup, insertion, and deletion. The core idea: use a hash function to map a key to an index in an underlying array, so we can access data in O(1) average time instead of O(n) or O(log n).\n\n**Core components:**\n1. **Underlying array (bucket array)**: A fixed-size array of slots. Each slot is called a bucket.\n2. **Hash function**: Takes a key and produces an integer. h(key) \u2192 integer. Then we map that integer to an array index, typically via modulo: index = hash(key) % capacity (or hash & (capacity - 1) when capacity is a power of 2).\n3. **Key comparison**: Even with hashing, we need equality checks because different keys can hash to the same index.\n\n**The hash function:**\n- Deterministic: same key \u2192 same hash every time\n- Uniform distribution: spreads keys evenly across buckets\n- Fast to compute\n- Avalanche effect: small change in key \u2192 big change in hash\n- Examples: for strings, polynomial rolling hash (djb2, FNV-1a); Python's hash for strings uses SipHash (randomized to prevent DoS attacks",
+      "text_len": 1724,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 150,
+        "draft_tokens": 450,
+        "accepted": 251,
+        "accept_ratio": 0.5578,
+        "accepted_per_step": 1.673,
+        "mean_draft_tokens_per_step": 3.0,
+        "pos": [
+          0.7667,
+          0.5533,
+          0.3533,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.11374849599815207,
+      "wall_s": 4.330557751000015,
+      "decode_s": 4.216809255001863,
+      "tok_s": 94.62130627007072,
+      "delivered_tok_s": 92.36685503331107,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion works\n4. How lookup works\n5. Collision handling (chaining, open addressing, variants)\n6. Resizing/rehashing\n7. Time complexity anal",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion works\n4. How lookup works\n5. Collision handling (chaining, open addressing, variants)\n6. Resizing/rehashing\n7. Time complexity analysis (with amortized analysis)\n8. Maybe some practical considerations\n\nLet me think through the content carefully to make sure it's accurate and thorough.\n\n**What is a hash map?**\nA hash map (also called hash table, dictionary, associative array) is a data structure that stores key-value pairs and provides efficient lookup, insertion, and deletion. The core idea: use a hash function to map a key to an index in an underlying array, so we can access data in O(1) average time instead of O(n) or O(log n).\n\n**Core components:**\n1. **Underlying array (bucket array)**: A fixed-size array of slots. Each slot is called a bucket.\n2. **Hash function**: Takes a key and produces an integer. h(key) \u2192 integer. Then we map that integer to an array index, typically via modulo: index = hash(key) % capacity (or hash & (capacity - 1) when capacity is a power of 2).\n3. **Key comparison**: Even with hashing, we need equality checks because different keys can hash to the same index.\n\n**The hash function:**\n- Deterministic: same key \u2192 same hash every time\n- Uniform distribution: spreads keys evenly across buckets\n- Fast to compute\n- Avalanche effect: small change in key \u2192 big change in hash\n- Examples: for strings, polynomial rolling hash (djb2, FNV-1a); Python's hash for strings uses SipHash (randomized to prevent DoS attacks",
+      "text_len": 1724,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 150,
+        "draft_tokens": 450,
+        "accepted": 251,
+        "accept_ratio": 0.5578,
+        "accepted_per_step": 1.673,
+        "mean_draft_tokens_per_step": 3.0,
+        "pos": [
+          0.7667,
+          0.5533,
+          0.3533,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.11440122400017572,
+      "wall_s": 4.328972009003337,
+      "decode_s": 4.214570785003161,
+      "tok_s": 94.67156214810157,
+      "delivered_tok_s": 92.40068985617958,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion works\n4. How lookup works\n5. Collision handling (chaining, open addressing, variants)\n6. Resizing/rehashing\n7. Time complexity anal",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion works\n4. How lookup works\n5. Collision handling (chaining, open addressing, variants)\n6. Resizing/rehashing\n7. Time complexity analysis (with amortized analysis)\n8. Maybe some practical considerations\n\nLet me think through the content carefully to make sure it's accurate and thorough.\n\n**What is a hash map?**\nA hash map (also called hash table, dictionary, associative array) is a data structure that stores key-value pairs and provides efficient lookup, insertion, and deletion. The core idea: use a hash function to map a key to an index in an underlying array, so we can access data in O(1) average time instead of O(n) or O(log n).\n\n**Core components:**\n1. **Underlying array (bucket array)**: A fixed-size array of slots. Each slot is called a bucket.\n2. **Hash function**: Takes a key and produces an integer. h(key) \u2192 integer. Then we map that integer to an array index, typically via modulo: index = hash(key) % capacity (or hash & (capacity - 1) when capacity is a power of 2).\n3. **Key comparison**: Even with hashing, we need equality checks because different keys can hash to the same index.\n\n**The hash function:**\n- Deterministic: same key \u2192 same hash every time\n- Uniform distribution: spreads keys evenly across buckets\n- Fast to compute\n- Avalanche effect: small change in key \u2192 big change in hash\n- Examples: for strings, polynomial rolling hash (djb2, FNV-1a); Python's hash for strings uses SipHash (randomized to prevent DoS attacks",
+      "text_len": 1724,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 150,
+        "draft_tokens": 450,
+        "accepted": 251,
+        "accept_ratio": 0.5578,
+        "accepted_per_step": 1.673,
+        "mean_draft_tokens_per_step": 3.0,
+        "pos": [
+          0.7667,
+          0.5533,
+          0.3533,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  ],
+  "ts": 1790827289.190937,
+  "prompt": "hashmap-prose",
+  "thinking": false,
+  "temperature": 0,
+  "concurrency": 1,
+  "note": "decode_ms_per_draft_step is a serving-cycle ratio, not a kernel timing",
+  "tok_s_median": 94.63442516514932,
+  "tok_s_min": 94.62130627007072,
+  "tok_s_max": 94.67156214810157,
+  "ttft_median_s": 0.11440122400017572,
+  "completion_tokens_median": 400.0,
+  "accept_ratio_median": 0.5578,
+  "accepted_per_step_median": 1.673,
+  "mean_draft_tokens_per_step_median": 3.0,
+  "aggregate_tok_s_median": null,
+  "decode_ms_per_draft_step_median": 28.10816460667411,
+  "any_nan": false,
+  "health_code_after": 200,
+  "short_after": {
+    "http": 200,
+    "ttft_s": 0.11328278799919644,
+    "wall_s": 0.19598408100137021,
+    "decode_s": 0.08270129300217377,
+    "tok_s": 84.64196563185546,
+    "delivered_tok_s": 40.81964187664848,
+    "completion_tokens": 8,
+    "prompt_tokens": 39,
+    "finish_reason": "length",
+    "nan": false,
+    "text_head": "The user wants a detailed, thorough explanation",
+    "text": "The user wants a detailed, thorough explanation",
+    "text_len": 47,
+    "usage": {
+      "prompt_tokens": 39,
+      "total_tokens": 47,
+      "completion_tokens": 8,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    }
+  }
+}

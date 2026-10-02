@@ -1,0 +1,20 @@
+[
+  {
+    "run": 1,
+    "prompt_tokens": 240715,
+    "ttft_s": 246.9,
+    "prefill_tok_s": 975,
+    "decode_tok_s": 172.8,
+    "needle_hit": true,
+    "answer_tail": "ser asked: \"\u4ed3\u5e93\u5e94\u6025\u5bc6\u94a5\u7684\u7f16\u53f7\u662f\u4ec0\u4e48\uff1f\u53ea\u56de\u7b54\u7f16\u53f7\u3002\" (What is the emergency key number of the warehouse? Only answer the number.)\n\nI already"
+  },
+  {
+    "run": 2,
+    "prompt_tokens": 241978,
+    "ttft_s": 242.9,
+    "prefill_tok_s": 996,
+    "decode_tok_s": 171.3,
+    "needle_hit": true,
+    "answer_tail": "s the emergency key number of the warehouse? Only answer the number.)\n\nThe answer is TX-7734-ALPHA.</think>TX-7734-ALPHA"
+  }
+]
