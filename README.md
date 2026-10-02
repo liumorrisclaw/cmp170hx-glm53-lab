@@ -1,6 +1,8 @@
 # GLM-5.3-Flash on 4× CMP 170HX — 部署实验记录
 
-> 本仓库记录在一台 4×CMP 170HX(矿卡改造)机器上部署 GLM-5.3-Flash 的实测数据、布局对比与推荐配置。所有数字为本机实测,原始 JSON 归档在 `data/`,实验记录在 `notebooks/`。
+[English](README_EN.md) | 中文
+
+> 本仓库记录在一台 4×CMP 170HX(矿卡改造)机器上部署 GLM-5.3-Flash 的实测数据、布局对比与推荐配置。所有数字为本机实测,原始 JSON 归档在 `data/`,图表由 `scripts/make_charts.py` 生成,实验记录在 `notebooks/`。
 >
 > 风格与致谢对象参考 [PixelML/club-170hx](https://github.com/PixelML/club-170hx) 的社区实验记录;引擎与配方来自 [Morrowmake/glm53-flash-cmp170hx-recipe](https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe)。
 
@@ -17,7 +19,9 @@
 
 ## 主要结果
 
-### 引擎 1.4.1 → 1.6.0(PP4,短输入 c1,3 轮中位,tok/s)
+### 引擎 1.4.1 → 1.6.0(PP4,短输入 c1,3 轮中位)
+
+![升级对比](assets/charts/01-upgrade-141-160-pp4.png)
 
 | 口径 | 1.4.1 | 1.6.0 | 变化 |
 |---|---|---|---|
@@ -25,9 +29,15 @@
 | coding | 129.2 | 127.5 | 持平 |
 | prose | 94.6 | 95.9 | 持平 |
 
-structured 的大幅提升与 1.6.0 的 acceptance-aware 投机深度一致:计数类文本吃满自适应深度(混合口径每步平均接受约 3.8 token,vs 1.4.x 固定 k=3 的约 2.9),而代码与文字类在浅深度即衰减。
+structured 的大幅提升与 1.6.0 的 acceptance-aware 投机深度一致。混合负载下按 draft 位置统计的接受率(630 步):
 
-### 1.6.0 下 TP4 与 PP4 的布局对比(x4 链路,tok/s)
+![投机接受率](assets/charts/07-acceptance-per-position.png)
+
+计数类文本吃满自适应深度,代码与文字类在浅深度即衰减——与上表只有 structured 大涨的现象一致。
+
+### 1.6.0 下 TP4 与 PP4 的布局对比(x4 链路)
+
+![布局对比](assets/charts/02-layout-tp4-vs-pp4-160.png)
 
 | 口径 | TP4 | PP4 | 说明 |
 |---|---|---|---|
@@ -35,11 +45,10 @@ structured 的大幅提升与 1.6.0 的 acceptance-aware 投机深度一致:计�
 | c1 coding | **229.1** | 127.5 | |
 | c1 prose | **136.4** | 95.9 | |
 | c8 计数聚合(墙钟) | 447.2 | **645.8** | 批量吞吐选 PP4 |
-| 长输入(482K)单流生成 | —(未测同长度) | 156.9 / 140.1 | 两轮 |
-| 长输入(482K)有效 prefill | — | **5,601–5,619** | TTFT ~86 s |
-| KV 池 | 1,081,579 @262K | 2,741,812 @524K | 容量估算 |
 
 ### 与 Gen2 x16 机器的差距定量(1.6.0,同为 TP4、host-shm all-reduce、P2P off)
+
+![链路差距](assets/charts/03-link-gap-x4-vs-x16.png)
 
 | 口径 | 本机(x4) | PixelML 1.6.0(x16) | 差距 |
 |---|---|---|---|
@@ -48,17 +57,34 @@ structured 的大幅提升与 1.6.0 的 acceptance-aware 投机深度一致:计�
 | c1 prose | 136.4 | 192.5 | −29% |
 | c8 计数聚合 | 447.2 | 798.6 | −44% |
 
-单流损失 25–29%,聚合损失放大到 44%(all-reduce 数据量随 batch 增大,x4 带宽伤害同步放大)。两机 KV 池仅差 0.9%,软件差异可排除。
+单流损失 25–29%,聚合损失放大到 44%(all-reduce 数据量随 batch 增大,x4 带宽伤害同步放大)。两机 KV 池仅差 0.9%(1,081,579 vs 1,072,150),软件差异可排除。
+
+![c8 聚合对比](assets/charts/04-c8-aggregate-compare.png)
+
+### 长输入(PP4 1.6.0,482K tokens 级,两轮)
+
+![长输入](assets/charts/05-longctx-482k-two-runs.png)
+
+| 轮 | TTFT | 有效 prefill | 生成速率 | needle |
+|---|---|---|---|---|
+| 1(482,277 tok) | 85.8 s | 5,619 tok/s | 156.9 tok/s | 命中 |
+| 2(482,635 tok) | 86.2 s | 5,601 tok/s | 140.1 tok/s | 命中 |
+
+### 1.4.x 三布局对比(历史,升级前)
+
+![三布局](assets/charts/06-layouts-141x.png)
+
+单流 decode 排序 TP4 > TP2+PP2 > PP4;TP2+PP2 在单流与聚合两个维度都不是最优。
 
 ### 阴性结果(避免他人重复踩坑)
 
 - **锁钟无效**:`nvidia-smi -lgc 1695` 设置成功,但负载下实测时钟仍 1470–1485 MHz(上限 1695),decode 283.7 vs 284.2 无差异。频率由 vBIOS 电压曲线决定,不接受软件锁定。
-- **SPEC_N=5 无收益**:accept rate 64.1%→48.3%,吞吐仅 +1%,KV 池 −31%(1.4.x 时代数据;1.6.0 的自适应深度使手动调 k 失去意义)。
+- **SPEC_N=5 无收益**:accept rate 64.1%→48.3%,吞吐仅 +1%,KV 池 −31%(1.4.x 数据;1.6.0 的自适应深度使手动调 k 失去意义)。
 - **P2P 在 PLX 拓扑上负优化**(PixelML 数据):本机 x4 无法协商 P2P,维持 host-shm all-reduce 路径即可。
 
 ## 推荐配置
 
-按负载形态二选一,引擎 1.6.0、DFlash2 投机(自适应深度)、`expandable_segments:False`、prefix caching 开启:
+按负载形态二选一,引擎 1.6.0、DFlash2 投机(自适应深度)、`expandable_segments:False`、prefix caching 开启(脱敏配置见 `configs/`):
 
 | 负载 | 布局 | MAX_LEN | 预期水平 |
 |---|---|---|---|
@@ -77,10 +103,13 @@ structured 的大幅提升与 1.6.0 的 acceptance-aware 投机深度一致:计�
 ## 目录结构
 
 ```
-├── README.md            本报告
+├── README.md            中文报告(本文件)
+├── README_EN.md         English version
 ├── notebooks/           按日期的实验记录(环境 pin、数据表、复现)
 ├── data/                脱敏原始 JSON(bench 归档)
 ├── configs/             脱敏启动配置(PP4 / TP4)
+├── scripts/             图表生成脚本(matplotlib,数据单源)
+├── assets/charts/       图表 PNG
 └── LICENSE
 ```
 
@@ -93,7 +122,7 @@ printf 'LAYOUT=pp4\nMODELS_DIR=/path/to/models\n' > .env
 ./install.sh && ./download.sh && ./start.sh
 ```
 
-测量协议:MiaAI-Lab `tests/bench_decode.py`,T=0、`enable_thinking=false`、400 tokens、5 次取中位(本机 3 次)。注意 `enable_thinking=false` 时模型仍会在 content 前输出推理文字(上游已记录),token 计数以 usage 为准。
+测量协议:MiaAI-Lab `tests/bench_decode.py`,T=0、`enable_thinking=false`、400 tokens、5 次取中位(本机 3 次)。注意 `enable_thinking=false` 时模型仍会在 content 前输出推理文字(上游已记录),token 计数以 usage 为准。图表可复现:`pip install matplotlib && python scripts/make_charts.py`。
 
 ## 许可与致谢
 

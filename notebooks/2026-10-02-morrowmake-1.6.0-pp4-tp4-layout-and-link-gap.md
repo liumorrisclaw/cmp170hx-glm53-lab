@@ -77,3 +77,9 @@ printf 'LAYOUT=pp4\nMODELS_DIR=/path/to/models\n' > .env   # 或 LAYOUT=tp4
 ```
 
 原始数据:`../data/decode_c1_*_v160*.json`、`../data/decode_c8_structured_v160*.json`、`../data/ctx512k_v160.json`。
+
+## English summary
+
+Upgraded the engine from 1.4.x (378c37b00) to Morrowmake 1.6.0 (3a2bf16da, wheel b6761e8ded). The pure launcher default configuration boots cleanly on PP4 — the two local mitigations needed on 1.4.x (forced GC after module load, workspace-growth allowance) are no longer required (A/B verified). One trap: `do_install` uninstalls `flashinfer` during the editable install; on slow links the verify step then fails in a loop. Manually install `flashinfer-python` and write the stamp to hand control to the skip path.
+
+Measured on 1.6.0 (400-token outputs, median of 3): PP4 c1 structured **220.5** (+58% vs 139.4 on 1.4.x), coding/prose flat — acceptance-aware depth pays off on structured text only. TP4 on this Gen2-x4 rig: 284.2 / 229.1 / 136.4, 8-user aggregate 447.2. Against PixelML's 1.6.0 TP4 numbers on Gen2 x16 (same engine, same protocol): −25…−29% single-stream, −44% aggregate — the PCIe link is the dominant remaining variable. Clock locking tested negative (vBIOS voltage curve ignores `-lgc`).
