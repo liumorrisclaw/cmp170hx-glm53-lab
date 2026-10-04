@@ -66,3 +66,16 @@ cd glm53-flash-cmp170hx-recipe && git checkout v1.7.0
 LAYOUT=tp4 MAX_LEN=262144 P2P=auto ./start.sh    # 新默认
 LAYOUT=pp4 MAX_LEN=524288 P2P=off ./start.sh     # 吞吐/长上下文备选
 ```
+
+## Addendum 2026-10-04 (evening) — prose single-stream, high-sample verification (30 runs)
+
+Question to settle: is TP4 · P2P on really the fastest single-stream cell for the prose prompt? Ran 10 runs on TP4 (on/off) and 5 runs on the other two layouts:
+
+| Configuration | n | median | min–max | per-run values |
+|---|---:|---:|---|---|
+| **TP4 · P2P on** | 10 | **152.6** | 151.5–152.7 | 151.5, 152.1, 152.4×2, 152.6×4, 152.7×2 |
+| TP4 · P2P off | 10 | 143.7 | 142.5–143.7 | 142.5, 143.5×2, 143.6×2, 143.7×5 |
+| TP2+PP2 · P2P off | 5 | 126.3 | 124.4–126.5 | |
+| PP4 · P2P off | 5 | 101.6 | 101.5–101.6 | |
+
+Answer: **yes — TP4 · P2P on is the fastest prose cell, +6.2% over TP4 off and +20–50% over the others, with extremely low variance** (spread <1% within each config; runs are effectively deterministic at temp-0). The P2P single-stream gain on prose (+6.2%) is even larger than on structured (+2.9%) — unpredictable text benefits more from faster stage transfers. Default stays TP4 · P2P on. Receipts: `../data/prose_*.json` (6 files).
