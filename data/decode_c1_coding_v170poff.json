@@ -1,0 +1,189 @@
+{
+  "phase": "v170poff_c1",
+  "health_code": 200,
+  "health_body": "",
+  "runs": [
+    {
+      "http": 200,
+      "ttft_s": 0.13197788499974195,
+      "wall_s": 2.5163357359997462,
+      "decode_s": 2.3843578510000043,
+      "tok_s": 167.34065309561592,
+      "delivered_tok_s": 158.9613000671705,
+      "completion_tokens": 400,
+      "prompt_tokens": 48,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a Python function named `clamp_range` that:\n1. Takes a list of ints as input\n2. Returns a new list with each value clamped to the range [0, 50]\n3. Includes a short docstring\n\nClamping means:\n- Values below 0 become 0\n- Values above 50 become 50\n- Values within [0, 50] stay the same\n\nLet me think about the implementation:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list w",
+      "text": "The user wants a Python function named `clamp_range` that:\n1. Takes a list of ints as input\n2. Returns a new list with each value clamped to the range [0, 50]\n3. Includes a short docstring\n\nClamping means:\n- Values below 0 become 0\n- Values above 50 become 50\n- Values within [0, 50] stay the same\n\nLet me think about the implementation:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\nThis is a clean one-liner using a list comprehension. The `min(50, v)` caps the value at 50, and `max(0, ...)` raises anything below 0 to 0.\n\nAlternative implementations:\n1. Using explicit conditionals:\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    result = []\n    for v in values:\n        if v < 0:\n            result.append(0)\n        elif v > 50:\n            result.append(50)\n        else:\n            result.append(v)\n    return result\n```\n\n2. Using a helper clamp function:\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    def clamp(v):\n        return 0 if v < 0 else 50 if v > 50 else v\n    return [clamp(v) for v in values]\n```\n\nThe first approach with `max(0, min(50, v))` is the most idiomatic and concise. Let me verify it works:\n- v = -5: min(50, -5) = -5, max(0",
+      "text_len": 1406,
+      "usage": {
+        "prompt_tokens": 48,
+        "total_tokens": 448,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 65,
+        "draft_tokens": 455,
+        "accepted": 339,
+        "accept_ratio": 0.7451,
+        "accepted_per_step": 5.215,
+        "mean_draft_tokens_per_step": 7.0,
+        "pos": [
+          0.8923,
+          0.8462,
+          0.8154,
+          0.7385,
+          0.6923,
+          0.6462,
+          0.5846
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.12270129600028667,
+      "wall_s": 2.5074503660002847,
+      "decode_s": 2.384749069999998,
+      "tok_s": 167.31320079726473,
+      "delivered_tok_s": 159.52459335737638,
+      "completion_tokens": 400,
+      "prompt_tokens": 48,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a Python function named `clamp_range` that:\n1. Takes a list of ints as input\n2. Returns a new list with each value clamped to the range [0, 50]\n3. Includes a short docstring\n\nClamping means:\n- Values below 0 become 0\n- Values above 50 become 50\n- Values within [0, 50] stay the same\n\nLet me think about the implementation:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list w",
+      "text": "The user wants a Python function named `clamp_range` that:\n1. Takes a list of ints as input\n2. Returns a new list with each value clamped to the range [0, 50]\n3. Includes a short docstring\n\nClamping means:\n- Values below 0 become 0\n- Values above 50 become 50\n- Values within [0, 50] stay the same\n\nLet me think about the implementation:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\nThis is a clean one-liner using a list comprehension. The `min(50, v)` caps the value at 50, and `max(0, ...)` raises anything below 0 to 0.\n\nAlternative implementations:\n1. Using explicit conditionals:\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    result = []\n    for v in values:\n        if v < 0:\n            result.append(0)\n        elif v > 50:\n            result.append(50)\n        else:\n            result.append(v)\n    return result\n```\n\n2. Using a helper clamp function:\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    def clamp(v):\n        return 0 if v < 0 else 50 if v > 50 else v\n    return [clamp(v) for v in values]\n```\n\nThe first approach with `max(0, min(50, v))` is the most idiomatic and concise. Let me verify it works:\n- v = -5: min(50, -5) = -5, max(0",
+      "text_len": 1406,
+      "usage": {
+        "prompt_tokens": 48,
+        "total_tokens": 448,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 65,
+        "draft_tokens": 455,
+        "accepted": 339,
+        "accept_ratio": 0.7451,
+        "accepted_per_step": 5.215,
+        "mean_draft_tokens_per_step": 7.0,
+        "pos": [
+          0.8923,
+          0.8462,
+          0.8154,
+          0.7385,
+          0.6923,
+          0.6462,
+          0.5846
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.12251518299990494,
+      "wall_s": 2.51420274999964,
+      "decode_s": 2.3916875669997353,
+      "tok_s": 166.8278104152741,
+      "delivered_tok_s": 159.09615881219494,
+      "completion_tokens": 400,
+      "prompt_tokens": 48,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a Python function named `clamp_range` that:\n1. Takes a list of ints as input\n2. Returns a new list with each value clamped to the range [0, 50]\n3. Includes a short docstring\n\nClamping means:\n- Values below 0 become 0\n- Values above 50 become 50\n- Values within [0, 50] stay the same\n\nLet me think about the implementation:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list w",
+      "text": "The user wants a Python function named `clamp_range` that:\n1. Takes a list of ints as input\n2. Returns a new list with each value clamped to the range [0, 50]\n3. Includes a short docstring\n\nClamping means:\n- Values below 0 become 0\n- Values above 50 become 50\n- Values within [0, 50] stay the same\n\nLet me think about the implementation:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\nThis is a clean one-liner using a list comprehension. The `min(50, v)` caps the value at 50, and `max(0, ...)` raises anything below 0 to 0.\n\nAlternative implementations:\n1. Using explicit conditionals:\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    result = []\n    for v in values:\n        if v < 0:\n            result.append(0)\n        elif v > 50:\n            result.append(50)\n        else:\n            result.append(v)\n    return result\n```\n\n2. Using a helper clamp function:\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each value clamped to the range [0, 50].\"\"\"\n    def clamp(v):\n        return 0 if v < 0 else 50 if v > 50 else v\n    return [clamp(v) for v in values]\n```\n\nThe first approach with `max(0, min(50, v))` is the most idiomatic and concise. Let me verify it works:\n- v = -5: min(50, -5) = -5, max(0",
+      "text_len": 1406,
+      "usage": {
+        "prompt_tokens": 48,
+        "total_tokens": 448,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 65,
+        "draft_tokens": 455,
+        "accepted": 339,
+        "accept_ratio": 0.7451,
+        "accepted_per_step": 5.215,
+        "mean_draft_tokens_per_step": 7.0,
+        "pos": [
+          0.8923,
+          0.8462,
+          0.8154,
+          0.7385,
+          0.6923,
+          0.6462,
+          0.5846
+        ]
+      }
+    }
+  ],
+  "ts": 1791077529.7474704,
+  "prompt": "coding-clamp-range",
+  "thinking": false,
+  "temperature": 0,
+  "concurrency": 1,
+  "note": "decode_ms_per_draft_step is a serving-cycle ratio, not a kernel timing",
+  "warmup": {
+    "tok_s": 206.32530008172276,
+    "ttft_s": 0.2536219029998392,
+    "completion_tokens": 32
+  },
+  "tok_s_median": 167.31320079726473,
+  "tok_s_min": 166.8278104152741,
+  "tok_s_max": 167.34065309561592,
+  "ttft_median_s": 0.12270129600028667,
+  "completion_tokens_median": 400.0,
+  "accept_ratio_median": 0.7451,
+  "accepted_per_step_median": 5.215,
+  "mean_draft_tokens_per_step_median": 7.0,
+  "aggregate_tok_s_median": null,
+  "decode_ms_per_draft_step_median": 36.6884472307692,
+  "any_nan": false,
+  "health_code_after": 200,
+  "short_after": {
+    "http": 200,
+    "ttft_s": 0.11708664600018892,
+    "wall_s": 0.18578179099995396,
+    "decode_s": 0.06869514499976503,
+    "tok_s": 101.89948649244343,
+    "delivered_tok_s": 43.06127073563406,
+    "completion_tokens": 8,
+    "prompt_tokens": 39,
+    "finish_reason": "length",
+    "nan": false,
+    "text_head": "The user wants a detailed, thorough explanation",
+    "text": "The user wants a detailed, thorough explanation",
+    "text_len": 47,
+    "usage": {
+      "prompt_tokens": 39,
+      "total_tokens": 47,
+      "completion_tokens": 8,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "created_cache_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    }
+  }
+}

@@ -154,6 +154,20 @@ coding/prose rank identically across systems (CMP 156.4–229.1 vs DGX 75.2; 95.
 
 Multiplying 0.72 (link) × 0.78 (layout) ≈ 0.56, plus the official 1.7.0 P2P+74SM gains, matches our 45% total gap — **no unexplained loss**. Remaining convergence: 74 SM unlock and P2P (hardware/driver layer, phase 2); the x4 link itself is not software-solvable.
 
+### Phase 2: cmpunlocker 74-SM unlock and P2P measurement (2026-10-04, on 1.7.0)
+
+Installed Morrowmake's cmpunlocker fork (`--p2p --profile=8gb --no-iommu --no-passthrough`, gcc-12, driver 610.43.03 with `ForceP2P=0x11`): **SM 70→74 on all four cards**, and the P2P content check passes **108/108** — GPU peer access works on this x4 mining rig for the first time. With P2P on, the 8-user aggregate regresses **−13.6%** (522.9 vs 645.3; bandwidth-starved P2P serialization loses to host-shm, matching PixelML's PLX observation), so production uses `P2P=off`:
+
+| Metric | 1.6.0 (70 SM) | 1.7.0 (74 SM, P2P off) | Δ |
+|---|---:|---:|---|
+| c1 structured | 220.5 | 219.8 | flat |
+| c1 coding | 127.5 | **167.3** | **+31%** |
+| c1 prose | 95.9 | **101.5** | +5.8% |
+| 8-user aggregate | 645.8 | 645.3 | flat |
+| 482K prefill | 5,596–5,619 | **5,656–5,778** | +2.6% |
+
+Rollback: old modules and conf backed up in `/root/cmpunlocker_backup_20261004/` on the rig; restore + reboot returns to 70 SM; `remove.sh` uninstalls. Also: 1.7.0's BOOT_CHECK kills a healthy launch with a URLError while the engine is still warming up (reported upstream; bypassed with `BOOT_CHECK=0` and verified by hand).
+
 ## Repository layout
 
 ```

@@ -156,6 +156,20 @@ c1 coding/prose 的相对排序一致(coding CMP 156.4-229.1 vs DGX 75.2;prose 9
 
 三个乘法因子 0.72(链路)× 0.78(布局)≈ 0.56,再叠加官方 1.7.0 的 P2P+74SM 增益,与本机 45% 的总差距吻合——**没有未知损失**。剩余可收敛项:74 SM 解锁与 P2P(硬件/驱动层,二期),以及 x4 链路本身(不可软件解)。
 
+### 二期:cmpunlocker 74 SM 解锁与 P2P 实测(2026-10-04,1.7.0)
+
+安装 Morrowmake fork 的 cmpunlocker(`--p2p --profile=8gb --no-iommu --no-passthrough`,gcc-12 编译,驱动 610.43.03 → 含 `ForceP2P=0x11`):**SM 70→74(四卡)**,P2P content check **108/108 通过**——x4 矿机上首次打通 GPU peer 通道。P2P 开启时 8 流聚合反而 **−13.6%**(522.9 vs 645.3,带宽不足下 P2P 序列化劣于 host-shm,与 PixelML 在 PLX 的观察一致),故生产采用 `P2P=off`:
+
+| 口径 | 1.6.0(70 SM) | 1.7.0(74 SM,P2P off) | 变化 |
+|---|---:|---:|---|
+| c1 structured | 220.5 | 219.8 | 持平 |
+| c1 coding | 127.5 | **167.3** | **+31%** |
+| c1 prose | 95.9 | **101.5** | +5.8% |
+| c8 计数聚合 | 645.8 | 645.3 | 持平 |
+| 482K prefill | 5,596–5,619 | **5,656–5,778** | +2.6% |
+
+回退方案:旧驱动模块与 conf 完整备份于机内 `/root/cmpunlocker_backup_20261004/`,恢复文件并重启即回 70 SM;`remove.sh` 可完整卸载。另:1.7.0 的 BOOT_CHECK 在 engine 未就绪时会因 URLError 误杀正常启动(已报上游,本机以 `BOOT_CHECK=0` 绕过并手动完成等价验证)。
+
 ## 目录结构
 
 ```
