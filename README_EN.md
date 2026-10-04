@@ -178,6 +178,27 @@ Rollback: old modules and conf backed up in `/root/cmpunlocker_backup_20261004/`
 6. **Negative-results list**: clock locking is a no-op (vBIOS voltage curve); thinking on/off does not change generation speed (rate = drafter predictability); manual SPEC_N tuning is obsolete; P2P on narrow links is a pessimization; block-level cache misses on sub-4608-token prompts are normal.
 7. **Rollback and backup**: old driver modules/config in `/root/cmpunlocker_backup_20261004/` on the rig; restore + reboot returns to 70 SM; `remove.sh` uninstalls. Every version's bench JSON and configs are in `data/` and `configs/`.
 
+### Layout × P2P matrix (2026-10-04, 1.7.0 @ 74 SM, Gen2 x4, 262144)
+
+All four cells measured (each its own launch + content check / P2P=off, same protocol, median of 3):
+
+![Matrix](assets/charts/11-layout-p2p-matrix.png)
+
+| Layout × P2P | c1 structured | c1 coding | c1 prose | 8-user aggregate |
+|---|---:|---:|---:|---:|
+| TP4 · P2P off | 293.2 | 223.1 | 143.4 | **462.8** |
+| TP4 · P2P on | **301.6** | **227.5** | **152.5** | 442.4 (−4.4%) |
+| TP2+PP2 · P2P off | 235.9 | 188.2 | 125.2 | **497.1** |
+| TP2+PP2 · P2P on | 231.4 | 188.4 | 123.2 | 468.4 (−5.8%) |
+| PP4 · P2P off (production) | 219.8 | 167.3 | 101.5 | **645.3** |
+| PP4 · P2P on | 212.9 | 163.2 | 98.9 | 522.9 (−19.1%) |
+
+Matrix findings:
+
+1. **P2P direction follows layout communication volume**: TP4 (all-reduce) gains +3–6% single-stream but loses −4.4% aggregate; TP2+PP2 is roughly neutral; PP4 (stage hops) turns negative even single-stream, −19.1% aggregate. At Gen2-x4 bandwidth **no row shows a strict win**.
+2. **1.7.0 changed the 1.4.x layout ranking**: TP2+PP2 is back — single-stream 235.9 beats PP4's 219.8, coding 188.2 beats PP4's 167.3, and its 497.1 aggregate beats TP4's 462.8. The old "wins nowhere" conclusion no longer holds; the new kernels favor the middle layout.
+3. **The best cell in every layout is P2P off**; TP4 single-stream can squeeze +2.9% structured from P2P at a −4.4% aggregate cost.
+
 ## Repository layout
 
 ```

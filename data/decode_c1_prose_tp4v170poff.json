@@ -1,0 +1,184 @@
+{
+  "phase": "t4off_p1",
+  "health_code": 200,
+  "health_body": "",
+  "runs": [
+    {
+      "http": 200,
+      "ttft_s": 0.10306889799994678,
+      "wall_s": 2.9124552009998297,
+      "decode_s": 2.809386302999883,
+      "tok_s": 142.02390022829718,
+      "delivered_tok_s": 137.34116832515818,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should be comprehensive and well-organized. Let me think about what a truly thorough explanation covers:\n\n1. **What a hash map is** - the fundamental concept, the problem it solves\n2. **Core components** - the array (buckets), the hash function, key-value pairs\n3. **How insertion works** - s",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should be comprehensive and well-organized. Let me think about what a truly thorough explanation covers:\n\n1. **What a hash map is** - the fundamental concept, the problem it solves\n2. **Core components** - the array (buckets), the hash function, key-value pairs\n3. **How insertion works** - step by step\n4. **How lookup works** - step by step\n5. **Hash functions** - what makes a good one, properties\n6. **Collision handling** - this is explicitly requested:\n   - Separate chaining (linked lists, trees in modern implementations like Java 8+)\n   - Open addressing (linear probing, quadratic probing, double hashing)\n   - Trade-offs between them\n7. **Load factor and resizing** - explicitly requested:\n   - Why resize\n   - When to resize (load factor)\n   - How resizing works (rehashing)\n   - Amortized analysis\n8. **Time complexity** - explicitly requested:\n   - Average case: O(1) for insert, lookup, delete\n   - Worst case: O(n)\n   - Amortized analysis of insertion with resizing\n   - Why worst case happens (adversarial inputs, bad hash functions)\n9. **Deletion** - important, especially tombstones in open addressing\n10. **Maybe some practical notes** - real-world implementations (Java HashMap, Python dict, etc.)\n\nLet me structure this as a proper educational document. The user asked for \"detailed step-by-step\" and \"thorough\" so length is justified here. I should use headers, code examples where helpful, and walk through concrete examples.\n\nLet me think through the technical content carefully to make sure I'm accurate:\n\n**Basic concept:**\nA hash map (also called hash table, dictionary, associative array) stores key-value pairs and provides near-",
+      "text_len": 1767,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 112,
+        "draft_tokens": 655,
+        "accepted": 287,
+        "accept_ratio": 0.4382,
+        "accepted_per_step": 2.562,
+        "mean_draft_tokens_per_step": 5.848,
+        "pos": [
+          0.8571,
+          0.5893,
+          0.4286,
+          0.2679,
+          0.2054,
+          0.1339,
+          0.0804
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.10302957299973059,
+      "wall_s": 2.8830069369996636,
+      "decode_s": 2.779977363999933,
+      "tok_s": 143.5263485116671,
+      "delivered_tok_s": 138.74402966795452,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should be comprehensive and well-organized. Let me think about what a truly thorough explanation covers:\n\n1. **What a hash map is** - the fundamental concept, the problem it solves\n2. **Core components** - the array (buckets), the hash function, key-value pairs\n3. **How insertion works** - s",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should be comprehensive and well-organized. Let me think about what a truly thorough explanation covers:\n\n1. **What a hash map is** - the fundamental concept, the problem it solves\n2. **Core components** - the array (buckets), the hash function, key-value pairs\n3. **How insertion works** - step by step\n4. **How lookup works** - step by step\n5. **Hash functions** - what makes a good one, properties\n6. **Collision handling** - this is explicitly requested:\n   - Separate chaining (linked lists, trees in modern implementations like Java 8+)\n   - Open addressing (linear probing, quadratic probing, double hashing)\n   - Trade-offs between them\n7. **Load factor and resizing** - explicitly requested:\n   - Why resize\n   - When to resize (load factor)\n   - How resizing works (rehashing)\n   - Amortized analysis\n8. **Time complexity** - explicitly requested:\n   - Average case: O(1) for insert, lookup, delete\n   - Worst case: O(n)\n   - Amortized analysis of insertion with resizing\n   - Why worst case happens (adversarial inputs, bad hash functions)\n9. **Deletion** - important, especially tombstones in open addressing\n10. **Maybe some practical notes** - real-world implementations (Java HashMap, Python dict, etc.)\n\nLet me structure this as a proper educational document. The user asked for \"detailed step-by-step\" and \"thorough\" so length is justified here. I should use headers, code examples where helpful, and walk through concrete examples.\n\nLet me think through the technical content carefully to make sure I'm accurate:\n\n**Basic concept:**\nA hash map (also called hash table, dictionary, associative array) stores key-value pairs and provides near-",
+      "text_len": 1767,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 112,
+        "draft_tokens": 655,
+        "accepted": 287,
+        "accept_ratio": 0.4382,
+        "accepted_per_step": 2.562,
+        "mean_draft_tokens_per_step": 5.848,
+        "pos": [
+          0.8571,
+          0.5893,
+          0.4286,
+          0.2679,
+          0.2054,
+          0.1339,
+          0.0804
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.10253319599996757,
+      "wall_s": 2.8850173189994166,
+      "decode_s": 2.782484122999449,
+      "tok_s": 143.3970446414939,
+      "delivered_tok_s": 138.64734792605273,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should be comprehensive and well-organized. Let me think about what a truly thorough explanation covers:\n\n1. **What a hash map is** - the fundamental concept, the problem it solves\n2. **Core components** - the array (buckets), the hash function, key-value pairs\n3. **How insertion works** - s",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should be comprehensive and well-organized. Let me think about what a truly thorough explanation covers:\n\n1. **What a hash map is** - the fundamental concept, the problem it solves\n2. **Core components** - the array (buckets), the hash function, key-value pairs\n3. **How insertion works** - step by step\n4. **How lookup works** - step by step\n5. **Hash functions** - what makes a good one, properties\n6. **Collision handling** - this is explicitly requested:\n   - Separate chaining (linked lists, trees in modern implementations like Java 8+)\n   - Open addressing (linear probing, quadratic probing, double hashing)\n   - Trade-offs between them\n7. **Load factor and resizing** - explicitly requested:\n   - Why resize\n   - When to resize (load factor)\n   - How resizing works (rehashing)\n   - Amortized analysis\n8. **Time complexity** - explicitly requested:\n   - Average case: O(1) for insert, lookup, delete\n   - Worst case: O(n)\n   - Amortized analysis of insertion with resizing\n   - Why worst case happens (adversarial inputs, bad hash functions)\n9. **Deletion** - important, especially tombstones in open addressing\n10. **Maybe some practical notes** - real-world implementations (Java HashMap, Python dict, etc.)\n\nLet me structure this as a proper educational document. The user asked for \"detailed step-by-step\" and \"thorough\" so length is justified here. I should use headers, code examples where helpful, and walk through concrete examples.\n\nLet me think through the technical content carefully to make sure I'm accurate:\n\n**Basic concept:**\nA hash map (also called hash table, dictionary, associative array) stores key-value pairs and provides near-",
+      "text_len": 1767,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 112,
+        "draft_tokens": 655,
+        "accepted": 287,
+        "accept_ratio": 0.4382,
+        "accepted_per_step": 2.562,
+        "mean_draft_tokens_per_step": 5.848,
+        "pos": [
+          0.8571,
+          0.5893,
+          0.4286,
+          0.2679,
+          0.2054,
+          0.1339,
+          0.0804
+        ]
+      }
+    }
+  ],
+  "ts": 1791082004.8321974,
+  "prompt": "hashmap-prose",
+  "thinking": false,
+  "temperature": 0,
+  "concurrency": 1,
+  "note": "decode_ms_per_draft_step is a serving-cycle ratio, not a kernel timing",
+  "tok_s_median": 143.3970446414939,
+  "tok_s_min": 142.02390022829718,
+  "tok_s_max": 143.5263485116671,
+  "ttft_median_s": 0.10302957299973059,
+  "completion_tokens_median": 400.0,
+  "accept_ratio_median": 0.4382,
+  "accepted_per_step_median": 2.562,
+  "mean_draft_tokens_per_step_median": 5.848,
+  "aggregate_tok_s_median": null,
+  "decode_ms_per_draft_step_median": 24.84360824106651,
+  "any_nan": false,
+  "health_code_after": 200,
+  "short_after": {
+    "http": 200,
+    "ttft_s": 0.10242867399938405,
+    "wall_s": 0.16425423199962097,
+    "decode_s": 0.061825558000236924,
+    "tok_s": 113.22178442729421,
+    "delivered_tok_s": 48.70498557393919,
+    "completion_tokens": 8,
+    "prompt_tokens": 39,
+    "finish_reason": "length",
+    "nan": false,
+    "text_head": "The user wants a detailed, thorough explanation",
+    "text": "The user wants a detailed, thorough explanation",
+    "text_len": 47,
+    "usage": {
+      "prompt_tokens": 39,
+      "total_tokens": 47,
+      "completion_tokens": 8,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "created_cache_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    }
+  }
+}

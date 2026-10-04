@@ -171,3 +171,25 @@ ax.set_ylabel("tok/s"); ax.legend(frameon=False, fontsize=9)
 ax.set_title("Community landscape, structured prompt (no bar = not measured)")
 save(fig, "10-community-landscape")
 print("landscape chart done")
+
+# ---- chart 11: layout x P2P matrix on 1.7.0 (74 SM) ------------------------
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(11.2, 4.0))
+layouts = ["TP4", "TP2+PP2", "PP4"]
+off_s = [293.2, 235.9, 219.8]; on_s = [301.6, 231.4, 212.9]
+off_a = [462.8, 497.1, 645.3]; on_a = [442.4, 468.4, None]
+xx = np.arange(3)
+b1 = ax1.bar(xx - ww/2, off_s, ww, color=GRAY, label="P2P off")
+b2 = ax1.bar(xx + ww/2, on_s, ww, color=BLUE, label="P2P on")
+label_bars(ax1, b1); label_bars(ax1, b2)
+ax1.set_xticks(xx, layouts); ax1.set_ylim(0, 360); ax1.legend(frameon=False, fontsize=9)
+ax1.set_title("single stream, structured (tok/s)")
+on_a_plot = [v if v else 0 for v in on_a]
+b3 = ax2.bar(xx - ww/2, off_a, ww, color=GRAY, label="P2P off")
+b4 = ax2.bar(xx + ww/2, on_a_plot, ww, color=BLUE, label="P2P on")
+label_bars(ax2, b3); label_bars(ax2, b4)
+ax2.set_xticks(xx, layouts); ax2.set_ylim(0, 760); ax2.legend(frameon=False, fontsize=9)
+ax2.set_title("8-user aggregate, structured (wall, tok/s)")
+fig.suptitle("1.7.0 @ 74 SM, Gen2 x4: layout × P2P matrix", y=1.02)
+fig.tight_layout()
+save(fig, "11-layout-p2p-matrix")
+print("matrix chart done")
