@@ -182,6 +182,16 @@ Rollback: old modules and conf backed up in `/root/cmpunlocker_backup_20261004/`
 ```
 
 
+### Would P2P scale up on x16? (assessment)
+
+**x16 itself is the big lever (+40% single-stream); P2P adds ~10% on top.**
+
+- Official 1.7.0 (x16 root ports, verified P2P on, 74 SM) measures 481 tok/s single-stream: +22% over their 1.6.0 no-P2P 394, of which P2P + the new all-reduce contribute ~10%; the rest is 74 SM plus the new kernels
+- Counter-evidence: PixelML's PLX topology saw P2P 2stage as a pessimization; our x4 measured c8 −13.6% with P2P — P2P gains are bandwidth-dependent, and serialization overhead eats them on narrow links
+- Priority: **restore the x16 link (board firmware/BIOS) >> P2P** (after x16, `P2P=auto` verifies and enables itself); on this x4 rig `P2P=off` is the data-backed optimum
+
+Quantified expectation if x16 is restored (official numbers folded onto our rig): TP4 c1 structured 284 → ~437-481; PP4 8-user aggregate 645 → ~900+ (official 949); 482K prefill 5,616 → 6,300+.
+
 ## Reproduction
 
 ```bash
