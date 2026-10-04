@@ -154,3 +154,20 @@ ax2.set_xticks([0, 1], names); ax2.set_ylim(0, 70)
 ax2.set_title("direct-output instruction: wall time")
 save(fig, "09-cmp170hx-vs-dgx-longtext")
 print("cmp/dgx charts done")
+
+# ---- chart 10: full landscape vs community systems (1.7.0 era) -------------
+fig, ax = plt.subplots(figsize=(9.2, 4.2))
+systems = ["Morrowmake 1.7.0\nTP4 x16+P2P+74SM\n(official)", "PixelML 1.6.0\nTP4 x16 PLX",
+           "ours 1.6.0\nTP4 x4", "ours 1.7.0\nPP4 x4", "2x DGX Spark\nEXL3 TensorFold"]
+s_str = [481, 396.0, 284.2, 216.9, 108.9]
+s_c8  = [949, 798.6, 447.2, 605.2, None]
+xx = np.arange(len(systems)); ww = 0.38
+b1 = ax.bar(xx - ww/2, s_str, ww, color=BLUE, label="single stream (structured)")
+s_c8_plot = [v if v else 0 for v in s_c8]
+b2 = ax.bar(xx + ww/2, s_c8_plot, ww, color=ORANGE, label="8-user aggregate (structured, wall)")
+label_bars(ax, b1, fmt="{:.0f}", dy=8); label_bars(ax, b2, fmt="{:.0f}", dy=8)
+ax.set_xticks(xx, systems, fontsize=8.5); ax.set_ylim(0, 1080)
+ax.set_ylabel("tok/s"); ax.legend(frameon=False, fontsize=9)
+ax.set_title("Community landscape, structured prompt (no bar = not measured)")
+save(fig, "10-community-landscape")
+print("landscape chart done")

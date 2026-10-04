@@ -128,6 +128,32 @@ Observed differences and attribution (the two systems differ in more than one wa
 3. **Context capacity: different roles.** The DGX pair's 256GB unified memory targets longer contexts and larger batches; the CMP configuration caps at 512K but leads across the board in measured single-stream generation and prefill rates.
 4. Role note: DGX is TensorFold's target hardware (Apple Silicon / modern NVIDIA unified runtime); CMP 170HX is Morrowmake's target (sm_80 mining cards). This is each open-source stack measured on its own best-fit hardware, not a same-hardware runtime comparison.
 
+## Community landscape gap table (2026-10-04, structured prompt)
+
+![Landscape](assets/charts/10-community-landscape.png)
+
+| System | Version / layout / link | c1 structured | 8-user aggregate | 482K prefill |
+|---|---|---:|---:|---:|
+| Morrowmake reference rig | 1.7.0 · TP4 · x16 · P2P on · 74 SM | **481** | **949** | ~3,197 |
+| PixelML rig | 1.6.0 · TP4 · x16 (PLX) · no P2P | 396.0 | 798.6 | — |
+| **this rig** | 1.6.0 · TP4 · x4 | 284.2 | 447.2 | 1,017 (old 500K run) |
+| **this rig (production)** | 1.7.0 · PP4 · x4 | 216.9 | 605.2 | **5,616** |
+| 2× DGX Spark | EXL3 4bpw · TensorFold | 108.9 | — | — |
+
+coding/prose rank identically across systems (CMP 156.4–229.1 vs DGX 75.2; 95.9–136.4 vs 60.9), not repeated per row.
+
+### Where the gap comes from: attribution (c1 structured 216.9 vs official 481 = 45%)
+
+| Variable | Magnitude (measured) | Software-fixable? |
+|---|---|---|
+| Link x4 vs x16 | **−28%** same-version TP4 (284.2 vs 396.0) | no (board firmware) |
+| Layout PP4 vs TP4 | same rig same version **−22%** single-stream (220.5 vs 284.2); aggregate flips (+35%) | yes (pick layout per workload) |
+| 74 SM unlock | official +5.7% compute (70→74 SM) | needs cmpunlocker driver patch (phase 2) |
+| P2P on | official 1.7.0 default; was a pessimization on PixelML's PLX; cannot negotiate on x4 | retest after cmpunlocker |
+| 1.7.0 kernels | this rig coding +22.6%; structured/long-input flat | obtained |
+
+Multiplying 0.72 (link) × 0.78 (layout) ≈ 0.56, plus the official 1.7.0 P2P+74SM gains, matches our 45% total gap — **no unexplained loss**. Remaining convergence: 74 SM unlock and P2P (hardware/driver layer, phase 2); the x4 link itself is not software-solvable.
+
 ## Repository layout
 
 ```
