@@ -168,6 +168,16 @@ Installed Morrowmake's cmpunlocker fork (`--p2p --profile=8gb --no-iommu --no-pa
 
 Rollback: old modules and conf backed up in `/root/cmpunlocker_backup_20261004/` on the rig; restore + reboot returns to 70 SM; `remove.sh` uninstalls. Also: 1.7.0's BOOT_CHECK kills a healthy launch with a URLError while the engine is still warming up (reported upstream; bypassed with `BOOT_CHECK=0` and verified by hand).
 
+## Conclusions (2026-10-04, phase 2 complete)
+
+1. **Final production configuration**: Morrowmake 1.7.0 (engine c1ce6491) · PP4 · MAX_LEN=524288 · cmpunlocker 74 SM · `P2P=off` · `BOOT_CHECK=0` · DFlash2 adaptive depth. Current level: c1 structured 219.8 / coding **167.3** / prose 101.5 tok/s, 8-user aggregate 645.3, 482K prefill 5,656–5,778, generation ~147 tok/s. **vs pre-upgrade (1.4.1): coding +31%, prose +5.8%, prefill +2.6%, KV pool 1.39M→2.72M, zero regressions.**
+2. **Gains by version**: 1.6.0 came from acceptance-aware depth (structured +58%); 1.7.0 from the new kernels (coding +31%, a speculation-friendly loop on code); the 74-SM unlock contributed prefill +2.6% and part of coding/prose.
+3. **Layout by workload**: interactive single-stream → TP4 (structured 284); batch / long-context / multi-tenant → PP4 (aggregate 645, 482K prefill 5,656, KV 2.72M). TP2+PP2 wins on neither axis — dropped.
+4. **P2P, two conclusions**: the 108/108 content check proves driver patches can open peer access on an x4 mining rig (overturning "GNS has no fix"); but at Gen2-x4 bandwidth P2P costs **−13.6%** on the aggregate, so production must run `P2P=off`. P2P gains are bandwidth-dependent: +10% on x16 (official), negative on narrow links.
+5. **The link is all that remains**: vs the official reference rig (x16+P2P+74 SM) our 45% single-stream gap = link −28% × layout −22%, plus their P2P/74-SM gains — no unexplained loss; the software stack is fully caught up. If x16 is restored (board firmware): TP4 structured projects ~437–481, PP4 aggregate ~900+.
+6. **Negative-results list**: clock locking is a no-op (vBIOS voltage curve); thinking on/off does not change generation speed (rate = drafter predictability); manual SPEC_N tuning is obsolete; P2P on narrow links is a pessimization; block-level cache misses on sub-4608-token prompts are normal.
+7. **Rollback and backup**: old driver modules/config in `/root/cmpunlocker_backup_20261004/` on the rig; restore + reboot returns to 70 SM; `remove.sh` uninstalls. Every version's bench JSON and configs are in `data/` and `configs/`.
+
 ## Repository layout
 
 ```

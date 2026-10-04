@@ -180,6 +180,16 @@ c1 coding/prose 的相对排序一致(coding CMP 156.4-229.1 vs DGX 75.2;prose 9
 
 若 x16 恢复的量化预期(本机,官方口径折算):TP4 c1 structured 284 → ~437-481;PP4 c8 聚合 645 → ~900+(官方 949);482K prefill 5,616 → 6,300+。
 
+## 结论(2026-10-04,二期收官)
+
+1. **最终生产配置**:Morrowmake 1.7.0(引擎 c1ce6491)· PP4 · MAX_LEN=524288 · cmpunlocker 74 SM · `P2P=off` · `BOOT_CHECK=0` · DFlash2 自适应深度。当前水平:c1 structured 219.8 / coding **167.3** / prose 101.5 tok/s,c8 聚合 645.3,482K prefill 5,656–5,778、单流生成 ~147。**相对升级前(1.4.1):coding +31%、prose +5.8%、prefill +2.6%,KV 池 1.39M→2.72M,零回退。**
+2. **升级收益逐版本**:1.6.0 主要来自 acceptance-aware 投机深度(structured +58%);1.7.0 主要来自新内核(coding +31%,对代码文本的投机正循环);74 SM 解锁贡献 prefill +2.6% 与部分 coding/prose 增量。
+3. **布局按负载选**:单流交互 TP4(structured 284),批量/长上下文/多租户 PP4(聚合 645、482K prefill 5,656、KV 2.72M);TP2+PP2 两头不占,弃。
+4. **P2P 双结论**:content check 108/108 通过证明驱动补丁可在 x4 矿机打通 peer(推翻"GNS 无解");但 Gen2 x4 带宽下 P2P 开启使聚合 **−13.6%**,生产必须 `P2P=off`。P2P 收益强依赖链路带宽:x16 官方口径 +10%,窄链路为负。
+5. **链路是剩余差距的全部**:与官方参考机(x16+P2P+74 SM)的 45% 单流差距 = 链路 −28% × 布局 −22%,再叠加官方侧 P2P/74 SM 增益——无未知损失,软件栈已完全拉平。若 x16 恢复(主板固件):TP4 structured 预期 ~437–481,PP4 聚合 ~900+。
+6. **阴性结果清单**:锁钟无效(vBIOS 电压曲线硬顶);思考开关不改变生成速率(速率=drafter 可预测性);SPEC_N 手调被自适应深度取代;P2P=force/窄链路 P2P 为负优化;小 prompt(<4608 块)块级缓存命中为 0 属正常。
+7. **回退与备份**:旧驱动模块/配置在机内 `/root/cmpunlocker_backup_20261004/`,恢复+重启即回 70 SM;`remove.sh` 完整卸载;每个版本的 bench JSON 与配置都在 `data/` 与 `configs/`。
+
 ## 目录结构
 
 ```
