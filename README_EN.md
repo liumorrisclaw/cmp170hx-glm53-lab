@@ -82,14 +82,15 @@ Single-stream decode ranks TP4 > TP2+PP2 > PP4; TP2+PP2 is optimal on neither ax
 - **SPEC_N=5 is not worth it**: accept 64.1%→48.3%, +1% throughput, −31% KV pool (1.4.x data; 1.6.0's adaptive depth makes manual k-tuning moot).
 - **P2P is a pessimization on PLX topologies** (PixelML data); this x4 rig cannot negotiate P2P anyway — the host-shm all-reduce path is the right one.
 
-## Recommended configuration
+## Recommended configuration (updated 2026-10-04: default is now TP4 · P2P on)
 
-Pick by workload; engine 1.6.0, DFlash2 speculative decoding (adaptive depth), `expandable_segments:False`, prefix caching on (sanitized configs in `configs/`):
+Engine 1.7.0, 74 SM, DFlash2 (adaptive depth), `expandable_segments:False`, prefix caching on (sanitized configs in `configs/`). **The rig's default is now TP4 · P2P on** — the highest single-stream cell in the matrix, with the P2P content check stably passing:
 
-| Workload | Layout | MAX_LEN | Expected level |
-|---|---|---|---|
-| Interactive single-stream / low latency | `LAYOUT=tp4` | 262144 | c1 structured ~284 tok/s |
-| Batch throughput / long context / multi-tenant | `LAYOUT=pp4` | 524288 | 482K prefill ~5,600 tok/s, long-input generation ~140–157 tok/s, 8-user aggregate ~646 tok/s |
+| Workload | Layout | MAX_LEN | P2P | Measured |
+|---|---|---|---|---|
+| **Interactive single-stream / low latency (default)** | `LAYOUT=tp4` | 262144 | `auto` (on) | c1 structured **301.6** / coding 227.5 / prose 152.5 |
+| Batch throughput / 512K context / multi-tenant | `LAYOUT=pp4` | 524288 | `off` | 482K prefill ~5,700, long-input generation ~147, aggregate 645.3 |
+| Balanced (single-stream + concurrency) | `PP=2 TP=2` | 262144 | `off` | 235.9 single / 497.1 aggregate (revived on 1.7.0) |
 
 Key points:
 
@@ -170,10 +171,10 @@ Rollback: old modules and conf backed up in `/root/cmpunlocker_backup_20261004/`
 
 ## Conclusions (2026-10-04, phase 2 complete)
 
-1. **Final production configuration**: Morrowmake 1.7.0 (engine c1ce6491) · PP4 · MAX_LEN=524288 · cmpunlocker 74 SM · `P2P=off` · `BOOT_CHECK=0` · DFlash2 adaptive depth. Current level: c1 structured 219.8 / coding **167.3** / prose 101.5 tok/s, 8-user aggregate 645.3, 482K prefill 5,656–5,778, generation ~147 tok/s. **vs pre-upgrade (1.4.1): coding +31%, prose +5.8%, prefill +2.6%, KV pool 1.39M→2.72M, zero regressions.**
+1. **Production configuration (default TP4 · P2P on since 2026-10-04 evening)**: Morrowmake 1.7.0 (engine c1ce6491) · `LAYOUT=tp4` · MAX_LEN=262144 · cmpunlocker 74 SM · `P2P=auto` · `BOOT_CHECK=0` · DFlash2 adaptive depth; PP4 · 524288 · `P2P=off` remains the throughput/long-context alternative. Current level: c1 structured 219.8 / coding **167.3** / prose 101.5 tok/s, 8-user aggregate 645.3, 482K prefill 5,656–5,778, generation ~147 tok/s. **vs pre-upgrade (1.4.1): coding +31%, prose +5.8%, prefill +2.6%, KV pool 1.39M→2.72M, zero regressions.**
 2. **Gains by version**: 1.6.0 came from acceptance-aware depth (structured +58%); 1.7.0 from the new kernels (coding +31%, a speculation-friendly loop on code); the 74-SM unlock contributed prefill +2.6% and part of coding/prose.
-3. **Layout by workload**: interactive single-stream → TP4 (structured 284); batch / long-context / multi-tenant → PP4 (aggregate 645, 482K prefill 5,656, KV 2.72M). TP2+PP2 wins on neither axis — dropped.
-4. **P2P, two conclusions**: the 108/108 content check proves driver patches can open peer access on an x4 mining rig (overturning "GNS has no fix"); but at Gen2-x4 bandwidth P2P costs **−13.6%** on the aggregate, so production must run `P2P=off`. P2P gains are bandwidth-dependent: +10% on x16 (official), negative on narrow links.
+3. **Layout by workload, default TP4 · P2P on**: interactive single-stream → TP4 (structured 301.6, matrix best); batch / 512K / multi-tenant → PP4 (aggregate 645.3); TP2+PP2 is revived on 1.7.0 (235.9 single beats PP4, 497.1 aggregate beats TP4) — no longer dropped.
+4. **P2P, two conclusions**: the 108/108 content check proves driver patches can open peer access on an x4 mining rig (overturning "GNS has no fix"); but at Gen2-x4 bandwidth P2P costs **−13.6%** on the aggregate, so aggregate-serving must run `P2P=off`; TP4 single-stream may enable it (+2.9% structured). P2P gains are bandwidth-dependent: +10% on x16 (official), negative on narrow links.
 5. **The link is all that remains**: vs the official reference rig (x16+P2P+74 SM) our 45% single-stream gap = link −28% × layout −22%, plus their P2P/74-SM gains — no unexplained loss; the software stack is fully caught up. If x16 is restored (board firmware): TP4 structured projects ~437–481, PP4 aggregate ~900+.
 6. **Negative-results list**: clock locking is a no-op (vBIOS voltage curve); thinking on/off does not change generation speed (rate = drafter predictability); manual SPEC_N tuning is obsolete; P2P on narrow links is a pessimization; block-level cache misses on sub-4608-token prompts are normal.
 7. **Rollback and backup**: old driver modules/config in `/root/cmpunlocker_backup_20261004/` on the rig; restore + reboot returns to 70 SM; `remove.sh` uninstalls. Every version's bench JSON and configs are in `data/` and `configs/`.

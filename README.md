@@ -82,14 +82,15 @@ structured 的大幅提升与 1.6.0 的 acceptance-aware 投机深度一致。�
 - **SPEC_N=5 无收益**:accept rate 64.1%→48.3%,吞吐仅 +1%,KV 池 −31%(1.4.x 数据;1.6.0 的自适应深度使手动调 k 失去意义)。
 - **P2P 在 PLX 拓扑上负优化**(PixelML 数据):本机 x4 无法协商 P2P,维持 host-shm all-reduce 路径即可。
 
-## 推荐配置
+## 推荐配置(2026-10-04 更新:默认改为 TP4 · P2P on)
 
-按负载形态二选一,引擎 1.6.0、DFlash2 投机(自适应深度)、`expandable_segments:False`、prefix caching 开启(脱敏配置见 `configs/`):
+引擎 1.7.0、74 SM、DFlash2 投机(自适应深度)、`expandable_segments:False`、prefix caching 开启(脱敏配置见 `configs/`)。**本机默认已切换为 TP4 · P2P on**(全场单流最高分,P2P content check 稳定通过):
 
-| 负载 | 布局 | MAX_LEN | 预期水平 |
-|---|---|---|---|
-| 交互式单流 / 低延迟 | `LAYOUT=tp4` | 262144 | c1 structured ~284 tok/s |
-| 批量吞吐 / 长上下文 / 多租户 | `LAYOUT=pp4` | 524288 | 482K prefill ~5,600 tok/s,长输入单流生成 ~140–157 tok/s,c8 聚合 ~646 tok/s |
+| 负载 | 布局 | MAX_LEN | P2P | 实测水平 |
+|---|---|---|---|---|
+| **交互式单流 / 低延迟(默认)** | `LAYOUT=tp4` | 262144 | `auto`(on) | c1 structured **301.6** / coding 227.5 / prose 152.5 |
+| 批量吞吐 / 512K 长上下文 / 多租户 | `LAYOUT=pp4` | 524288 | `off` | 482K prefill ~5,700,长输入单流生成 ~147,c8 聚合 645.3 |
+| 均衡型(单流+并发兼顾) | `PP=2 TP=2` | 262144 | `off` | 单流 235.9,聚合 497.1(1.7.0 下已复活) |
 
 要点:
 
@@ -182,10 +183,10 @@ c1 coding/prose 的相对排序一致(coding CMP 156.4-229.1 vs DGX 75.2;prose 9
 
 ## 结论(2026-10-04,二期收官)
 
-1. **最终生产配置**:Morrowmake 1.7.0(引擎 c1ce6491)· PP4 · MAX_LEN=524288 · cmpunlocker 74 SM · `P2P=off` · `BOOT_CHECK=0` · DFlash2 自适应深度。当前水平:c1 structured 219.8 / coding **167.3** / prose 101.5 tok/s,c8 聚合 645.3,482K prefill 5,656–5,778、单流生成 ~147。**相对升级前(1.4.1):coding +31%、prose +5.8%、prefill +2.6%,KV 池 1.39M→2.72M,零回退。**
+1. **生产配置(2026-10-04 晚起默认 TP4 · P2P on)**:Morrowmake 1.7.0(引擎 c1ce6491)· `LAYOUT=tp4` · MAX_LEN=262144 · cmpunlocker 74 SM · `P2P=auto` · `BOOT_CHECK=0` · DFlash2 自适应深度;PP4 · 524288 · `P2P=off` 保留为吞吐/长上下文备选。当前水平:c1 structured 219.8 / coding **167.3** / prose 101.5 tok/s,c8 聚合 645.3,482K prefill 5,656–5,778、单流生成 ~147。**相对升级前(1.4.1):coding +31%、prose +5.8%、prefill +2.6%,KV 池 1.39M→2.72M,零回退。**
 2. **升级收益逐版本**:1.6.0 主要来自 acceptance-aware 投机深度(structured +58%);1.7.0 主要来自新内核(coding +31%,对代码文本的投机正循环);74 SM 解锁贡献 prefill +2.6% 与部分 coding/prose 增量。
-3. **布局按负载选**:单流交互 TP4(structured 284),批量/长上下文/多租户 PP4(聚合 645、482K prefill 5,656、KV 2.72M);TP2+PP2 两头不占,弃。
-4. **P2P 双结论**:content check 108/108 通过证明驱动补丁可在 x4 矿机打通 peer(推翻"GNS 无解");但 Gen2 x4 带宽下 P2P 开启使聚合 **−13.6%**,生产必须 `P2P=off`。P2P 收益强依赖链路带宽:x16 官方口径 +10%,窄链路为负。
+3. **布局按负载选,默认 TP4 · P2P on**:单流交互 TP4(structured 301.6,矩阵最高分);批量/512K/多租户 PP4(聚合 645.3);TP2+PP2 在 1.7.0 复活(单流 235.9 超 PP4、聚合 497.1 超 TP4),不再是弃子。
+4. **P2P 双结论**:content check 108/108 通过证明驱动补丁可在 x4 矿机打通 peer(推翻"GNS 无解");但 Gen2 x4 带宽下 P2P 开启使聚合 **−13.6%**,聚合场景必须 `P2P=off`;TP4 单流可开(+2.9% structured)。P2P 收益强依赖链路带宽:x16 官方口径 +10%,窄链路为负。
 5. **链路是剩余差距的全部**:与官方参考机(x16+P2P+74 SM)的 45% 单流差距 = 链路 −28% × 布局 −22%,再叠加官方侧 P2P/74 SM 增益——无未知损失,软件栈已完全拉平。若 x16 恢复(主板固件):TP4 structured 预期 ~437–481,PP4 聚合 ~900+。
 6. **阴性结果清单**:锁钟无效(vBIOS 电压曲线硬顶);思考开关不改变生成速率(速率=drafter 可预测性);SPEC_N 手调被自适应深度取代;P2P=force/窄链路 P2P 为负优化;小 prompt(<4608 块)块级缓存命中为 0 属正常。
 7. **回退与备份**:旧驱动模块/配置在机内 `/root/cmpunlocker_backup_20261004/`,恢复+重启即回 70 SM;`remove.sh` 完整卸载;每个版本的 bench JSON 与配置都在 `data/` 与 `configs/`。
