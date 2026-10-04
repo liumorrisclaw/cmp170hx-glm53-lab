@@ -1,0 +1,184 @@
+{
+  "phase": "v170_p1",
+  "health_code": 200,
+  "health_body": "",
+  "runs": [
+    {
+      "http": 200,
+      "ttft_s": 0.1161294560006354,
+      "wall_s": 4.277420000995335,
+      "decode_s": 4.161290544994699,
+      "tok_s": 95.88371580540725,
+      "delivered_tok_s": 93.51431468196294,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion, lookup, and deletion work\n4. Collision handling (separate chaining, open addressing with its variants)\n5. Load factor and resizing",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion, lookup, and deletion work\n4. Collision handling (separate chaining, open addressing with its variants)\n5. Load factor and resizing\n6. Time complexity analysis (average and worst case)\n7. Maybe some practical considerations\n\nLet me structure this well. The user explicitly asked for \"detailed step-by-step\" and \"thorough,\" so length is appropriate here. I should use headers, code examples perhaps, and clear organization. Markdown is appropriate since this will likely be rendered.\n\nLet me think through the content carefully:\n\n## 1. The Problem Hash Maps Solve\n\nArrays give O(1) access by index, but only if you know the index. If you want to look up by arbitrary key (like a name), you'd need O(n) search. Hash maps bridge this: they use a hash function to convert a key into an array index, giving near-O(1) access by key.\n\n## 2. Core Components\n\n- **Keys and values**: the data being stored\n- **Hash function**: converts key \u2192 integer\n- **Bucket array**: underlying array where entries live\n- **Index computation**: typically `hash(key) % array_length` (or bitwise AND for power-of-2 sizes)\n\n## 3. Basic Operations (step-by-step)\n\n**Insertion (put/set):**\n1. Compute hash of key\n2. Map hash to index in bucket array\n3. Handle collision if needed\n4. Store key-value pair\n\n**Lookup (get):**\n1. Compute hash of key\n2. Map to index\n3. Search bucket for matching key (must compare actual keys, not just hashes, because different keys can hash to same index",
+      "text_len": 1725,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 118,
+        "draft_tokens": 762,
+        "accepted": 286,
+        "accept_ratio": 0.3753,
+        "accepted_per_step": 2.424,
+        "mean_draft_tokens_per_step": 6.458,
+        "pos": [
+          0.7881,
+          0.5847,
+          0.4322,
+          0.2542,
+          0.1864,
+          0.1102,
+          0.0678
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.11556659499910893,
+      "wall_s": 4.280038053999306,
+      "decode_s": 4.164471459000197,
+      "tok_s": 95.81047773486041,
+      "delivered_tok_s": 93.45711298670264,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion, lookup, and deletion work\n4. Collision handling (separate chaining, open addressing with its variants)\n5. Load factor and resizing",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion, lookup, and deletion work\n4. Collision handling (separate chaining, open addressing with its variants)\n5. Load factor and resizing\n6. Time complexity analysis (average and worst case)\n7. Maybe some practical considerations\n\nLet me structure this well. The user explicitly asked for \"detailed step-by-step\" and \"thorough,\" so length is appropriate here. I should use headers, code examples perhaps, and clear organization. Markdown is appropriate since this will likely be rendered.\n\nLet me think through the content carefully:\n\n## 1. The Problem Hash Maps Solve\n\nArrays give O(1) access by index, but only if you know the index. If you want to look up by arbitrary key (like a name), you'd need O(n) search. Hash maps bridge this: they use a hash function to convert a key into an array index, giving near-O(1) access by key.\n\n## 2. Core Components\n\n- **Keys and values**: the data being stored\n- **Hash function**: converts key \u2192 integer\n- **Bucket array**: underlying array where entries live\n- **Index computation**: typically `hash(key) % array_length` (or bitwise AND for power-of-2 sizes)\n\n## 3. Basic Operations (step-by-step)\n\n**Insertion (put/set):**\n1. Compute hash of key\n2. Map hash to index in bucket array\n3. Handle collision if needed\n4. Store key-value pair\n\n**Lookup (get):**\n1. Compute hash of key\n2. Map to index\n3. Search bucket for matching key (must compare actual keys, not just hashes, because different keys can hash to same index",
+      "text_len": 1725,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 118,
+        "draft_tokens": 762,
+        "accepted": 286,
+        "accept_ratio": 0.3753,
+        "accepted_per_step": 2.424,
+        "mean_draft_tokens_per_step": 6.458,
+        "pos": [
+          0.7881,
+          0.5847,
+          0.4322,
+          0.2542,
+          0.1864,
+          0.1102,
+          0.0678
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.11563324099552119,
+      "wall_s": 4.273766420999891,
+      "decode_s": 4.15813318000437,
+      "tok_s": 95.95652248915718,
+      "delivered_tok_s": 93.5942586928782,
+      "completion_tokens": 400,
+      "prompt_tokens": 39,
+      "finish_reason": "length",
+      "nan": false,
+      "text_head": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion, lookup, and deletion work\n4. Collision handling (separate chaining, open addressing with its variants)\n5. Load factor and resizing",
+      "text": "The user wants a detailed, thorough explanation of hash maps. This is a technical educational request, so I should write a comprehensive explanation covering:\n\n1. What a hash map is and its purpose\n2. The core components (hash function, buckets, etc.)\n3. How insertion, lookup, and deletion work\n4. Collision handling (separate chaining, open addressing with its variants)\n5. Load factor and resizing\n6. Time complexity analysis (average and worst case)\n7. Maybe some practical considerations\n\nLet me structure this well. The user explicitly asked for \"detailed step-by-step\" and \"thorough,\" so length is appropriate here. I should use headers, code examples perhaps, and clear organization. Markdown is appropriate since this will likely be rendered.\n\nLet me think through the content carefully:\n\n## 1. The Problem Hash Maps Solve\n\nArrays give O(1) access by index, but only if you know the index. If you want to look up by arbitrary key (like a name), you'd need O(n) search. Hash maps bridge this: they use a hash function to convert a key into an array index, giving near-O(1) access by key.\n\n## 2. Core Components\n\n- **Keys and values**: the data being stored\n- **Hash function**: converts key \u2192 integer\n- **Bucket array**: underlying array where entries live\n- **Index computation**: typically `hash(key) % array_length` (or bitwise AND for power-of-2 sizes)\n\n## 3. Basic Operations (step-by-step)\n\n**Insertion (put/set):**\n1. Compute hash of key\n2. Map hash to index in bucket array\n3. Handle collision if needed\n4. Store key-value pair\n\n**Lookup (get):**\n1. Compute hash of key\n2. Map to index\n3. Search bucket for matching key (must compare actual keys, not just hashes, because different keys can hash to same index",
+      "text_len": 1725,
+      "usage": {
+        "prompt_tokens": 39,
+        "total_tokens": 439,
+        "completion_tokens": 400,
+        "prompt_tokens_details": {
+          "cached_tokens": 0,
+          "created_cache_tokens": 0
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 118,
+        "draft_tokens": 762,
+        "accepted": 286,
+        "accept_ratio": 0.3753,
+        "accepted_per_step": 2.424,
+        "mean_draft_tokens_per_step": 6.458,
+        "pos": [
+          0.7881,
+          0.5847,
+          0.4322,
+          0.2542,
+          0.1864,
+          0.1102,
+          0.0678
+        ]
+      }
+    }
+  ],
+  "ts": 1791050656.352997,
+  "prompt": "hashmap-prose",
+  "thinking": false,
+  "temperature": 0,
+  "concurrency": 1,
+  "note": "decode_ms_per_draft_step is a serving-cycle ratio, not a kernel timing",
+  "tok_s_median": 95.88371580540725,
+  "tok_s_min": 95.81047773486041,
+  "tok_s_max": 95.95652248915718,
+  "ttft_median_s": 0.11563324099552119,
+  "completion_tokens_median": 400.0,
+  "accept_ratio_median": 0.3753,
+  "accepted_per_step_median": 2.424,
+  "mean_draft_tokens_per_step_median": 6.458,
+  "aggregate_tok_s_median": null,
+  "decode_ms_per_draft_step_median": 35.26517411012457,
+  "any_nan": false,
+  "health_code_after": 200,
+  "short_after": {
+    "http": 200,
+    "ttft_s": 0.1153563510015374,
+    "wall_s": 0.18489872800273588,
+    "decode_s": 0.06954237700119847,
+    "tok_s": 100.6580491184442,
+    "delivered_tok_s": 43.266928260759194,
+    "completion_tokens": 8,
+    "prompt_tokens": 39,
+    "finish_reason": "length",
+    "nan": false,
+    "text_head": "The user wants a detailed, thorough explanation",
+    "text": "The user wants a detailed, thorough explanation",
+    "text_len": 47,
+    "usage": {
+      "prompt_tokens": 39,
+      "total_tokens": 47,
+      "completion_tokens": 8,
+      "prompt_tokens_details": {
+        "cached_tokens": 0,
+        "created_cache_tokens": 0
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    }
+  }
+}
