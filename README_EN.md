@@ -169,6 +169,22 @@ Installed Morrowmake's cmpunlocker fork (`--p2p --profile=8gb --no-iommu --no-pa
 
 Rollback: old modules and conf backed up in `/root/cmpunlocker_backup_20261004/` on the rig; restore + reboot returns to 70 SM; `remove.sh` uninstalls. Also: 1.7.0's BOOT_CHECK kills a healthy launch with a URLError while the engine is still warming up (reported upstream; bypassed with `BOOT_CHECK=0` and verified by hand).
 
+## Phase 3: upstream cmpunlocker v0.5 + ECC live + ForceP2P as an option (2026-10-06)
+
+Production configuration is now: **Morrowmake 1.7.2 · TP4 · P2P on · upstream cmpunlocker v0.5 (15-patch local build) · ECC Enabled**. Measured c1 structured **302.2** (1.7.0) / **301.9** (1.7.2, median of 3) against the 10-04 reference of 301.6 (P2P on) / 293.2 (P2P off) — the P2P gain and ECC's zero cost carry over fully on the v0.5 base. Details in [`notebooks/2026-10-06-cmpunlocker-v05-ecc-upgrade.md`](notebooks/2026-10-06-cmpunlocker-v05-ecc-upgrade.md); upgrade/ops notes and credits in [`CMPUNLOCKER-V0.5.md`](CMPUNLOCKER-V0.5.md).
+
+1.7.2 same-day addendum: the BOOT_CHECK fix verified on a real cold boot (connection errors during engine init are retried instead of killing the launch); author-protocol PP4 · P2P off · 512K · 8 users × 10 rounds: structured aggregate **643.1** (our 1.6.0/1.7.0 baseline 645.3–645.8, −0.3% = noise), coding 503.2, prose 396.7, single-user 218.0 flat — **no regression on x4, production pinned to 1.7.2**.
+
+| Item | Detail |
+|---|---|
+| v0.5 upgrade | upstream [amoghmunikote/cmpunlocker](https://github.com/amoghmunikote/cmpunlocker) [v0.5](https://github.com/amoghmunikote/cmpunlocker/releases/tag/v0.5) (released 2026-10-05); 610.43.03 whitelisted, native 4-GPU support; **ECC DRAM/SRAM live for the first time** (previously N/A); SM stays 74 (the "+4 SMs" in the notes is relative to v0.4's 70 baseline) |
+| ECC verification | four layers: reporting (full counter set exposed) / control (`nvidia-smi -e 0` = Not Supported, statically forced) / hardware (SEC2 payload FBPA writes confirmed in dmesg) / load (per-GPU 1 GB pattern ×20 copy bit-verify PASS, ~1585 GB/s aggregate copy) |
+| ECC perf cost | TP4 · P2P off across the 10-04 matrix: structured 293.5 vs 293.2, coding 222.9 vs 223.1, prose 143.3 vs 143.4, 8-user aggregate 461.5 vs 462.8 — **all \|Δ\| ≤ 0.3%, far below the 5% gate** (HBM2e side-band ECC does not consume user bandwidth), ECC kept. Rigor note: fault-injection tooling is unavailable, so this is integration-level verification; a 5-minute ECC counter snapshot cron is deployed and we are watching for silent bit-flips that never trigger ECC |
+| ForceP2P as an option | ported the fork's p2p-unlock.patch and **added a ForceP2P registry runtime gate**; restored the `trap31_plm` payload register v0.5 dropped (without it the patch's safety guard correctly refuses to force P2P); `cmp-forcep2p on/off/status` + reboot to switch; content check **108/108 PASS** |
+| Ops | `cmp-driver-status` self-check (prints the fix sequence when module/kernel mismatch); kernel metas `apt-mark hold` (the installer removes DKMS — after a kernel upgrade rerun install.sh then re-arm `cmp-forcep2p on`); `cmp-ecc-snapshot` every 5 minutes (root cron): aggregate correctable growth = early HBM weak-row warning, uncorrectable > 0 = ERROR |
+
+Rollback chain: `/root/cmpunlocker_v05_ecc_nop2p_20261006_modules/` (clean v0.5) → `/root/cmpunlocker_backup_20261006_pre_v05/` (bendy2 state) → `/root/cmpunlocker_backup_20261004/`. Receipts: `data/decode_c1_structured_v05p2p.json`, `data/decode_c1_*_ecc_on_p2poff.json`, `data/decode_c*_v172_pp4512k_p2poff.json`.
+
 ## Conclusions (2026-10-04, phase 2 complete)
 
 1. **Production configuration (default TP4 · P2P on since 2026-10-04 evening)**: Morrowmake 1.7.0 (engine c1ce6491) · `LAYOUT=tp4` · MAX_LEN=262144 · cmpunlocker 74 SM · `P2P=auto` · `BOOT_CHECK=0` · DFlash2 adaptive depth; PP4 · 524288 · `P2P=off` remains the throughput/long-context alternative. Current level: c1 structured 219.8 / coding **167.3** / prose 101.5 tok/s, 8-user aggregate 645.3, 482K prefill 5,656–5,778, generation ~147 tok/s. **vs pre-upgrade (1.4.1): coding +31%, prose +5.8%, prefill +2.6%, KV pool 1.39M→2.72M, zero regressions.**

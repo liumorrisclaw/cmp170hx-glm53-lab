@@ -183,7 +183,7 @@ c1 coding/prose 的相对排序一致(coding CMP 156.4-229.1 vs DGX 75.2;prose 9
 
 ## 三期:cmpunlocker upstream v0.5 + ECC 生效 + ForceP2P 可选项(2026-10-06)
 
-生产配置更新为:**Morrowmake 1.7.2 · TP4 · P2P on · upstream cmpunlocker v0.5(15 补丁)· ECC Enabled**。c1 structured 实测 **302.2**(1.7.0)/ **301.9**(1.7.2,3 轮中位),对照 10-04 的 301.6(P2P on)/293.2(P2P off)——P2P 收益与 ECC 零损耗在 v0.5 基座上完整保留。细节见 `notebooks/2026-10-06-cmpunlocker-v05-ecc-upgrade.md`。
+生产配置更新为:**Morrowmake 1.7.2 · TP4 · P2P on · upstream cmpunlocker v0.5(15 补丁)· ECC Enabled**。c1 structured 实测 **302.2**(1.7.0)/ **301.9**(1.7.2,3 轮中位),对照 10-04 的 301.6(P2P on)/293.2(P2P off)——P2P 收益与 ECC 零损耗在 v0.5 基座上完整保留。细节见 `notebooks/2026-10-06-cmpunlocker-v05-ecc-upgrade.md`;升级与运维说明、致谢见 [`CMPUNLOCKER-V0.5.md`](CMPUNLOCKER-V0.5.md)([English](CMPUNLOCKER-V0.5_EN.md))。
 
 1.7.2 追加(同日):BOOT_CHECK 修复实测通过(冷启动重试不再误杀);作者口径 PP4 · P2P off · 512K · 8 用户 ×10 轮:structured 聚合 **643.1**(本机 1.6.0/1.7.0 基线 645.3–645.8,−0.3% 噪声内)、coding 503.2、prose 396.7,单流 218.0 持平——**x4 上无回退,生产定格 1.7.2**。
 

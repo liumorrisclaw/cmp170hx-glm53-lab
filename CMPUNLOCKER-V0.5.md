@@ -1,5 +1,7 @@
 # cmpunlocker v0.5 升级说明与致谢（2026-10-06）
 
+中文 | [English](CMPUNLOCKER-V0.5_EN.md)
+
 本机（4× CMP 170HX 64GB，Gen2 x4，GLM-5.3-Flash 推理生产机）已于 2026-10-06 从 bendy2 gen2 分支构建（74 SM + ForceP2P）升级到 **cmpunlocker upstream v0.5**，零回退，ECC 首次生效。实验细节与全部数据见 [`notebooks/2026-10-06-cmpunlocker-v05-ecc-upgrade.md`](notebooks/2026-10-06-cmpunlocker-v05-ecc-upgrade.md)。
 
 ## 上游链接
