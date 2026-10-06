@@ -2,6 +2,17 @@
 
 [English](README_EN.md) | 中文
 
+## 📰 更新导航
+
+| 日期 | 更新 | 一句话结果 | 传送门 |
+|---|---|---|---|
+| **2026-10-06** | **三期:upstream cmpunlocker v0.5 + ECC 生效 + 引擎 1.7.2** | ECC Mode N/A → **Enabled**,四层验证;全口径性能代价 \|Δ\|≤0.3%;P2P 做成一键开关(content check 108/108);1.7.2 零回退,单流 structured **301.9** tok/s,DSH 端到端写作实测破百(110.5 tok/s) | [实验笔记](notebooks/2026-10-06-cmpunlocker-v05-ecc-upgrade.md) · [升级说明+致谢](CMPUNLOCKER-V0.5.md)([EN](CMPUNLOCKER-V0.5_EN.md)) |
+| 2026-10-04 | 二期:Morrowmake 1.7.0 + 74 SM 解锁 + 布局×P2P 全矩阵 | coding +31%;生产默认切 TP4·P2P on;x4 与官方 x16 差距全归因(链路 −28% × 布局 −22%) | [实验笔记](notebooks/2026-10-04-v1.7.0-phase2-cmpunlocker-74sm-p2p.md) · [矩阵笔记](notebooks/2026-10-04-layout-p2p-matrix-tp4-default.md) |
+| 2026-10-02 | 1.6.0 升级 + 与 2× DGX Spark 对照 | structured +58%;单流领先 DGX 1.6–2.9×,长文本 2.9× | [实验笔记](notebooks/2026-10-02-morrowmake-1.6.0-pp4-tp4-layout-and-link-gap.md) |
+| 2026-10-01 | 一期:1.4.x 三布局对比 + 512K 首测 | 排序 TP4 > TP2+PP2 > PP4;482K prefill ~5.6K tok/s | [实验笔记](notebooks/2026-10-01-1.4.x-layout-comparison-and-512k-first-pass.md) |
+
+> 🔥 **今天(2026-10-06)**:cmpunlocker [upstream v0.5](https://github.com/amoghmunikote/cmpunlocker/releases/tag/v0.5) 把 ECC(DRAM+SRAM 纠错)解锁了——ECC Mode 首次 Enabled,四层集成验证通过,四口径性能代价全部 ≤0.3%(严谨说明:故障注入工具暂缺,为集成验证结论,持续观察静默错误中)。引擎同日跟进 1.7.2,零回退。详情点上行"传送门"。
+
 > 本仓库记录在一台 4×CMP 170HX(矿卡改造)机器上部署 GLM-5.3-Flash 的实测数据、布局对比与推荐配置。所有数字为本机实测,原始 JSON 归档在 `data/`,图表由 `scripts/make_charts.py` 生成,实验记录在 `notebooks/`。
 >
 > 风格与致谢对象参考 [PixelML/club-170hx](https://github.com/PixelML/club-170hx) 的社区实验记录;引擎与配方来自 [Morrowmake/glm53-flash-cmp170hx-recipe](https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe)。
