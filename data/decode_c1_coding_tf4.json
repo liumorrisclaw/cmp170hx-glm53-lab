@@ -1,0 +1,185 @@
+{
+  "phase": "tf4_c1",
+  "health_code": 200,
+  "health_body": "{\"ok\": true, \"backend\": \"tensorfold\", \"busy\": false, \"requests_running\": 0, \"requests_total\": 20, \"prompt_tokens_total\": 650, \"completion_tokens_total\": 9723, \"prefill_seconds_total\": 10.380797, \"decode_seconds_total\": 210.971396, \"cached_tokens_total\": 497, \"rounds_total\": 9703, \"drafted_total\": 0, \"accepted_total\": 0, \"context_length\": 32768}",
+  "runs": [
+    {
+      "http": 200,
+      "ttft_s": 0.11183025198988616,
+      "wall_s": 7.071776044002036,
+      "decode_s": 6.9599457920121495,
+      "tok_s": 46.552086709044644,
+      "delivered_tok_s": 45.9573377292753,
+      "completion_tokens": 325,
+      "prompt_tokens": 42,
+      "finish_reason": "stop",
+      "nan": false,
+      "text_head": "Here's a Python function that clamps values to the range [0, 50]:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\n\n    Values below 0 become 0, values above 50 become 50,\n    and values within the range are unchanged.\n    \"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\n**Example usage:**\n\n```python\nnums = [-10, 0, 25, 50, 75, 3]\npri",
+      "text": "Here's a Python function that clamps values to the range [0, 50]:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\n\n    Values below 0 become 0, values above 50 become 50,\n    and values within the range are unchanged.\n    \"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\n**Example usage:**\n\n```python\nnums = [-10, 0, 25, 50, 75, 3]\nprint(clamp_range(nums))  # Output: [0, 0, 25, 50, 50, 3]\n```\n\n**How it works:**\n- `min(50, v)` caps any value above 50 at 50.\n- `max(0, ...)` then raises any value below 0 up to 0.\n- The list comprehension builds a new list, leaving the original unmodified.\n\nAn alternative that some find more readable uses explicit clamping logic:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\"\"\"\n    clamped = []\n    for v in values:\n        if v < 0:\n            clamped.append(0)\n        elif v > 50:\n            clamped.append(50)\n        else:\n            clamped.append(v)\n    return clamped\n```\n\nBoth versions produce identical results; the first is more concise and idiomatic Python.",
+      "text_len": 1133,
+      "usage": {
+        "prompt_tokens": 42,
+        "completion_tokens": 325,
+        "total_tokens": 367,
+        "prompt_tokens_details": {
+          "cached_tokens": 41
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 0,
+        "draft_tokens": 0,
+        "accepted": 0,
+        "accept_ratio": null,
+        "accepted_per_step": null,
+        "mean_draft_tokens_per_step": null,
+        "pos": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.10699112300062552,
+      "wall_s": 7.065644975984469,
+      "decode_s": 6.9586538529838435,
+      "tok_s": 46.56072953838192,
+      "delivered_tok_s": 45.99721626329197,
+      "completion_tokens": 325,
+      "prompt_tokens": 42,
+      "finish_reason": "stop",
+      "nan": false,
+      "text_head": "Here's a Python function that clamps values to the range [0, 50]:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\n\n    Values below 0 become 0, values above 50 become 50,\n    and values within the range are unchanged.\n    \"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\n**Example usage:**\n\n```python\nnums = [-10, 0, 25, 50, 75, 3]\npri",
+      "text": "Here's a Python function that clamps values to the range [0, 50]:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\n\n    Values below 0 become 0, values above 50 become 50,\n    and values within the range are unchanged.\n    \"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\n**Example usage:**\n\n```python\nnums = [-10, 0, 25, 50, 75, 3]\nprint(clamp_range(nums))  # Output: [0, 0, 25, 50, 50, 3]\n```\n\n**How it works:**\n- `min(50, v)` caps any value above 50 at 50.\n- `max(0, ...)` then raises any value below 0 up to 0.\n- The list comprehension builds a new list, leaving the original unmodified.\n\nAn alternative that some find more readable uses explicit clamping logic:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\"\"\"\n    clamped = []\n    for v in values:\n        if v < 0:\n            clamped.append(0)\n        elif v > 50:\n            clamped.append(50)\n        else:\n            clamped.append(v)\n    return clamped\n```\n\nBoth versions produce identical results; the first is more concise and idiomatic Python.",
+      "text_len": 1133,
+      "usage": {
+        "prompt_tokens": 42,
+        "completion_tokens": 325,
+        "total_tokens": 367,
+        "prompt_tokens_details": {
+          "cached_tokens": 41
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 0,
+        "draft_tokens": 0,
+        "accepted": 0,
+        "accept_ratio": null,
+        "accepted_per_step": null,
+        "mean_draft_tokens_per_step": null,
+        "pos": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "http": 200,
+      "ttft_s": 0.10763361002318561,
+      "wall_s": 7.066063733014744,
+      "decode_s": 6.958430122991558,
+      "tok_s": 46.562226576000505,
+      "delivered_tok_s": 45.99449032443674,
+      "completion_tokens": 325,
+      "prompt_tokens": 42,
+      "finish_reason": "stop",
+      "nan": false,
+      "text_head": "Here's a Python function that clamps values to the range [0, 50]:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\n\n    Values below 0 become 0, values above 50 become 50,\n    and values within the range are unchanged.\n    \"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\n**Example usage:**\n\n```python\nnums = [-10, 0, 25, 50, 75, 3]\npri",
+      "text": "Here's a Python function that clamps values to the range [0, 50]:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\n\n    Values below 0 become 0, values above 50 become 50,\n    and values within the range are unchanged.\n    \"\"\"\n    return [max(0, min(50, v)) for v in values]\n```\n\n**Example usage:**\n\n```python\nnums = [-10, 0, 25, 50, 75, 3]\nprint(clamp_range(nums))  # Output: [0, 0, 25, 50, 50, 3]\n```\n\n**How it works:**\n- `min(50, v)` caps any value above 50 at 50.\n- `max(0, ...)` then raises any value below 0 up to 0.\n- The list comprehension builds a new list, leaving the original unmodified.\n\nAn alternative that some find more readable uses explicit clamping logic:\n\n```python\ndef clamp_range(values):\n    \"\"\"Return a new list with each int clamped to the range [0, 50].\"\"\"\n    clamped = []\n    for v in values:\n        if v < 0:\n            clamped.append(0)\n        elif v > 50:\n            clamped.append(50)\n        else:\n            clamped.append(v)\n    return clamped\n```\n\nBoth versions produce identical results; the first is more concise and idiomatic Python.",
+      "text_len": 1133,
+      "usage": {
+        "prompt_tokens": 42,
+        "completion_tokens": 325,
+        "total_tokens": 367,
+        "prompt_tokens_details": {
+          "cached_tokens": 41
+        },
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "spec": {
+        "drafts": 0,
+        "draft_tokens": 0,
+        "accepted": 0,
+        "accept_ratio": null,
+        "accepted_per_step": null,
+        "mean_draft_tokens_per_step": null,
+        "pos": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    }
+  ],
+  "ts": 1791266881.66228,
+  "prompt": "coding-clamp-range",
+  "thinking": false,
+  "temperature": 0,
+  "concurrency": 1,
+  "note": "decode_ms_per_draft_step is a serving-cycle ratio, not a kernel timing",
+  "warmup": {
+    "tok_s": 46.580569385360064,
+    "ttft_s": 0.11212346900720149,
+    "completion_tokens": 32
+  },
+  "tok_s_median": 46.56072953838192,
+  "tok_s_min": 46.552086709044644,
+  "tok_s_max": 46.562226576000505,
+  "ttft_median_s": 0.10763361002318561,
+  "completion_tokens_median": 325.0,
+  "accept_ratio_median": null,
+  "accepted_per_step_median": null,
+  "mean_draft_tokens_per_step_median": null,
+  "aggregate_tok_s_median": null,
+  "decode_ms_per_draft_step_median": null,
+  "any_nan": false,
+  "health_code_after": 200,
+  "short_after": {
+    "http": 200,
+    "ttft_s": 0.1168271699862089,
+    "wall_s": 0.26874821897945367,
+    "decode_s": 0.15192104899324477,
+    "tok_s": 46.07656441545014,
+    "delivered_tok_s": 29.767639132193153,
+    "completion_tokens": 8,
+    "prompt_tokens": 33,
+    "finish_reason": "length",
+    "nan": false,
+    "text_head": "# How a Hash Map Works: A",
+    "text": "# How a Hash Map Works: A",
+    "text_len": 25,
+    "usage": {
+      "prompt_tokens": 33,
+      "completion_tokens": 8,
+      "total_tokens": 41,
+      "prompt_tokens_details": {
+        "cached_tokens": 32
+      },
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    }
+  }
+}

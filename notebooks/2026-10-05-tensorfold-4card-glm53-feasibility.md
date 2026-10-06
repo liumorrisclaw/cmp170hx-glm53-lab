@@ -51,3 +51,37 @@ TensorFold 的 2-rank 是**跨机器**设计(`--master` 指向对端地址,NCCL/
 ## 结论
 
 维持基线:**Morrowmake 1.7.0 · 74 SM · TP4 · P2P on(单流 301.6/227.5/152.5)与本机各布局数据**(aggregate 645.3 @PP4)继续作为这台机器的性能上限代表。TensorFold 途径在本硬件上无路可走,除非上游引入 4-rank 分片。
+
+## Addendum 2026-10-05 (evening) — 4-rank patch set built and WORKING
+
+The "not viable" verdict above applied to **stock TensorFold**. We then generalized the source (as feared, but it turned out to be mechanical, not architectural):
+
+**Patch set (all in `TensorFold/src`, on top of 0.6.3 + the three sm_80 patches):**
+
+| File | Change |
+|---|---|
+| `cli_args.py` | `--tp choices=(1,2,4)`; `--rank choices=(0,1,2,3)`; help text |
+| `cli.py` | tp>1 generalized (master check, follow-loop enters for every non-zero rank, rank message) |
+| `families/glm5_next/__init__.py` | tp gate accepts (2,4); `world=int(tp)` plumbed into GlmEngine (the `options.get("tp")` variant silently returned None — `tp` is a named parameter) |
+| `families/glm5_next/cuda/engine.py` | `world` init param; NCCL(world); the four `(2 *` metadata gathers → `world *` with per-rank slicing; capacity/draft geometry lambdas take `self.world`; weights.load(world=...) |
+| `families/glm5_next/cuda/split.py` | `split_bytes`/`split_device`/`RankReader._span` `// 2` → `// ranks` (row/col/dim1), rank×chunk addressing |
+| `families/glm5_next/cuda/weights.py` | `load(..., world=2)`; HL/LL already derived from world |
+
+**Launch** (single node, one process per GPU — CUDA_VISIBLE_DEVICES isolates each rank; NCCL world=4 over shared memory/P2P):
+
+```bash
+TENSORFOLD_MIN_CAPABILITY=8.0 TF_NCCL_LIB=<nccl .so> \
+CUDA_VISIBLE_DEVICES=$R python -m tensorfold serve <ckpt> --tp 4 --rank $R \
+  --master 127.0.0.1 --no-drafts --context 32768 --port 8899   # ranks 3,2,1 then 0
+```
+
+**Results (rank 0 of 4 serves HTTP; 19 min to load 164 GB across 4 ranks):**
+
+| Prompt | 4× CMP 170HX — TensorFold EXL3 4-rank (this patch set) | 4× CMP — Morrowmake 1.7.0 baseline |
+|---|---|---|
+| c1 structured / coding / prose | 46.6 / 46.6 / 46.4 | **301.6 / 227.5 / 152.5** |
+| Red Alert storyline, 6k budget | 110.7 s, **completed** (473 CN chars) | 50.4 s, completed (654 CN chars) |
+
+Identical rates across all three prompts (46.5 ± 0.1) — EXL3 has no speculation, so every token is one step. **Verdict: the 4-rank adaptation works end to end, but TensorFold's EXL3 path reaches only 15–30% of the Morrowmake baseline** — the EXL3 dequant path lacks any speculative amplification, and TensorFold's kernels are not tuned for sm_80 (the patches only lower the admission floor). The cross-host 2-rank design was the only thing standing between TensorFold and this hardware; with the 4-rank patch it runs — it just doesn't compete on speed with a W4A16+Marlin+DFlash2 stack.
+
+Rollback: Morrowmake production restored immediately after (TP4 · P2P auto · 262144). Receipts: `../data/decode_c1_*_tf4.json`.
