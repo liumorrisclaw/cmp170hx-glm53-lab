@@ -181,6 +181,22 @@ c1 coding/prose 的相对排序一致(coding CMP 156.4-229.1 vs DGX 75.2;prose 9
 
 若 x16 恢复的量化预期(本机,官方口径折算):TP4 c1 structured 284 → ~437-481;PP4 c8 聚合 645 → ~900+(官方 949);482K prefill 5,616 → 6,300+。
 
+## 三期:cmpunlocker upstream v0.5 + ECC 生效 + ForceP2P 可选项(2026-10-06)
+
+生产配置更新为:**Morrowmake 1.7.2 · TP4 · P2P on · upstream cmpunlocker v0.5(15 补丁)· ECC Enabled**。c1 structured 实测 **302.2**(1.7.0)/ **301.9**(1.7.2,3 轮中位),对照 10-04 的 301.6(P2P on)/293.2(P2P off)——P2P 收益与 ECC 零损耗在 v0.5 基座上完整保留。细节见 `notebooks/2026-10-06-cmpunlocker-v05-ecc-upgrade.md`。
+
+1.7.2 追加(同日):BOOT_CHECK 修复实测通过(冷启动重试不再误杀);作者口径 PP4 · P2P off · 512K · 8 用户 ×10 轮:structured 聚合 **643.1**(本机 1.6.0/1.7.0 基线 645.3–645.8,−0.3% 噪声内)、coding 503.2、prose 396.7,单流 218.0 持平——**x4 上无回退,生产定格 1.7.2**。
+
+| 项 | 内容 |
+|---|---|
+| v0.5 升级 | upstream amoghmunikote/cmpunlocker v0.5(2026-10-05 发布);610.43.03 在白名单、原生 4 卡支持;**ECC DRAM/SRAM 首次生效**(此前 N/A);SM 维持 74(v0.5 注记的 "+4 SMs" 是相对 v0.4 的 70 基线) |
+| ECC 生效性 | 四层验证:报告层(计数器全暴露)/控制层(`nvidia-smi -e 0` = Not Supported,补丁静态强制)/硬件层(SEC2 载荷 FBPA 写入 + dmesg 对证)/负载层(4 卡 1GB 图样 ×20 拷贝校验 PASS,聚合拷贝带宽 ~1585 GB/s) |
+| ECC 性能代价 | TP4 · P2P off 全口径对照 10-04 矩阵:structured 293.5 vs 293.2、coding 222.9 vs 223.1、prose 143.3 vs 143.4、c8 聚合 461.5 vs 462.8——**全部 \|Δ\|≤0.3%,远低于 5% 门禁**(HBM2e side-band ECC 不占用户带宽),保留 ECC |
+| ForceP2P 可选项 | 移植 fork 的 p2p-unlock.patch 并**新增 ForceP2P 注册表运行时闸门**;修复 v0.5 丢失的 `trap31_plm` 载荷项(缺失时安全护栏正确拒绝强制 P2P);`sudo cmp-forcep2p on/off/status` + 重启切换;content check **108/108 PASS** |
+| 运维 | `cmp-driver-status` 自检(模块与内核不匹配即输出修复命令);内核 metas 已 `apt-mark hold`(DKMS 已被安装器移除,内核升级后必须重跑 install.sh 并补 `cmp-forcep2p on`);`cmp-ecc-snapshot` 每 5 分钟(root cron)记录 ECC 计数器:aggregate correctable 增长 = HBM 弱行早期预警,uncorrectable>0 = ERROR |
+
+回退链:`/root/cmpunlocker_v05_ecc_nop2p_20261006_modules/`(v0.5 纯净态)→ `/root/cmpunlocker_backup_20261006_pre_v05/`(bendy2 态)→ `/root/cmpunlocker_backup_20261004/`。回执:`data/decode_c1_structured_v05p2p.json`、`data/decode_c1_*_ecc_on_p2poff.json`。
+
 ## 结论(2026-10-04,二期收官)
 
 1. **生产配置(2026-10-04 晚起默认 TP4 · P2P on)**:Morrowmake 1.7.0(引擎 c1ce6491)· `LAYOUT=tp4` · MAX_LEN=262144 · cmpunlocker 74 SM · `P2P=auto` · `BOOT_CHECK=0` · DFlash2 自适应深度;PP4 · 524288 · `P2P=off` 保留为吞吐/长上下文备选。当前水平:c1 structured 219.8 / coding **167.3** / prose 101.5 tok/s,c8 聚合 645.3,482K prefill 5,656–5,778、单流生成 ~147。**相对升级前(1.4.1):coding +31%、prose +5.8%、prefill +2.6%,KV 池 1.39M→2.72M,零回退。**

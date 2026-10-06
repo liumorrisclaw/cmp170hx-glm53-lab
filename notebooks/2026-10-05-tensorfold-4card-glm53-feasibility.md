@@ -1,6 +1,6 @@
 # 2026-10-05 — TensorFold 在 4×CMP 170HX 上跑 GLM-5.3-Flash:可行性评估(结论:不可行)
 
-目标:把 hym74 上的 TensorFold POC(此前单卡跑通过 Qwen3.8-27B EXL3)扩展到 4 卡 GLM-5.3-Flash,使用最新内核(0.6.5,2026-10-03),对比能否超过 Morrowmake 1.7.0 基线(TP4·P2P on 单流 301.6 / PP4 聚合 645.3)。
+目标:把 4×CMP 170HX 测试机上的 TensorFold POC(此前单卡跑通过 Qwen3.8-27B EXL3)扩展到 4 卡 GLM-5.3-Flash,使用最新内核(0.6.5,2026-10-03),对比能否超过 Morrowmake 1.7.0 基线(TP4·P2P on 单流 301.6 / PP4 聚合 645.3)。
 
 结论先行:**不可行**。TensorFold 的 GLM CUDA 引擎存在三重结构性约束,任何一项都独立否决本机部署;均为源码级证据,非文档推测。
 
