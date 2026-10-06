@@ -172,3 +172,15 @@ sudo cmp-forcep2p status
 3. ~~内核升级防护~~ **已完成**:`cmp-driver-status` 自检(FAIL 时直接给出修复命令序列);`linux-*-generic-hwe-22.04` 等 metas 已 `apt-mark hold`(恢复:`sudo apt-mark unhold <pkg>`)。
 4. x16 链路恢复(主板固件)优先级不变:恢复后 P2P 由上游 gen2 probe-retrain + 引擎 `P2P=auto` 自动接管。
 5. 建议上游:把 `trap31_plm` 载荷项与 ForceP2P 闸门补回 upstream(cmpunlocker v0.5 丢失前者导致 P2P 不可用;闸门使 P2P 从"有无"变成"按部署切换")。可整理成 patch 邮件/Discord 帖。
+
+## 致谢
+
+本次升级站在这些项目与人们的工作上,一并致谢:
+
+- **[amoghmunikote/cmpunlocker](https://github.com/amoghmunikote/cmpunlocker)([v0.5](https://github.com/amoghmunikote/cmpunlocker/releases/tag/v0.5))** —— ECC 四补丁(ecc-enable / ecc-fbpa-static / ecc-reporting / booter-verify)是本篇的核心增益;护栏注释"宁要诚实的 unsupported,不要静默搬坏数据"的设计,让我们在移植 P2P 时避开了一次静默数据损坏。
+- **[Morrowmake/glm53-flash-cmp170hx-recipe](https://github.com/Morrowmake/glm53-flash-cmp170hx-recipe)** —— 引擎配方与 vLLM fork;`p2p-unlock.patch` 与 trap31 方案源自其 cmpunlocker fork;BOOT_CHECK bug 一个版本内修复,并主动给出 x16 8 用户对比数据邀请复测。
+- **[bendy2/cmpunlocker](https://github.com/bendy2/cmpunlocker)** —— gen2 多卡分支稳定服役近两个月(2026-08~10),为平滑升级留出完整备份。
+- **[PixelML/club-170hx](https://github.com/PixelML/club-170hx)** —— 独立实验与 PLX P2P 负优化先见;本仓库风格参照。
+- **MiaAI-Lab** —— bench_decode.py 测量协议。**canada-quant** —— W4A16 权重。**incoai** —— DFlash2 drafter。**智谱 / Z.ai** —— 开放 GLM-5.3-Flash。
+
+完整致谢与升级运维说明见 [`../../CMPUNLOCKER-V0.5.md`](../../CMPUNLOCKER-V0.5.md)([English](../../CMPUNLOCKER-V0.5_EN.md))。
